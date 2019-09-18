@@ -2,31 +2,27 @@ syntax = "proto3";
 
 package model;
 
-option java_package = "de.digitalfrontiers.protobuf.deployment.model";
-option java_outer_classname = "DeploymentEventProto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 
-message DeploymentEvents {
-    repeated DeploymentEvent deploymentEvent = 1;
+option java_package = "io.toxa108.pokerito.logicservice.proto";
+option java_multiple_files = true;
+
+
+service TableService {
+    rpc Chat (stream ChatMessage) returns (stream ChatMessageFromService);
+    rpc GetNames (google.protobuf.Empty) returns (ChatRoom);
+}
+message ChatRoom {
+    repeated string names = 1;
 }
 
-message DeploymentEvent {
-    int32 id = 1;
-    Target target = 2;
-    string technology = 3;
-    string product = 4;
-    string version = 5;
-    Status status = 6;
+message ChatMessage {
+    string from = 1;
+    string message = 2;
+}
 
-    enum Target {
-        DEVELOPMENT = 0;
-        TEST = 1;
-        ACCEPTANCE = 2;
-        PRODUCTION = 3;
-    }
-
-    enum Status {
-        SUCCESSFUL = 0;
-        FAILED = 1;
-        ABORTED = 2;
-    }
+message ChatMessageFromService {
+    google.protobuf.Timestamp timestamp = 1;
+    ChatMessage message = 2;
 }
