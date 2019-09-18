@@ -28,3 +28,6 @@ tasks.withType<KotlinCompile> {
         jvmTarget = "1.8"
     }
 }
+kotlin {
+    experimental.coroutines = Coroutines.ENABLE
+}
