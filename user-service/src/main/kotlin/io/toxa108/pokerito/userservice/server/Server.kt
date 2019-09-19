@@ -7,14 +7,13 @@ import org.springframework.stereotype.Service
 
 @Service
 class Server(private val userService: UserService) {
-    private val server: io.grpc.Server
+    private val server: io.grpc.Server = ServerBuilder
+            .forPort(15003)
+            .addService(userService)
+            .addService(ProtoReflectionService.newInstance())
+            .build()
 
     init {
-        server = ServerBuilder
-                .forPort(15003)
-                .addService(userService)
-                .addService(ProtoReflectionService.newInstance())
-                .build()
-                .start()
+        server.start()
     }
 }
