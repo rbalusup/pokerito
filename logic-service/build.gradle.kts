@@ -22,17 +22,23 @@ repositories {
 }
 
 sourceSets {
-    create("sample"){
+    main {
         proto {
-            srcDir("src/sample/protobuf")
+            srcDir("src/main/proto")
         }
     }
+//    create("sample"){
+//        proto {
+//            srcDir("src/sample/protobuf")
+//        }
+//    }
 }
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.springframework.boot:spring-boot-starter-web")
 
     implementation("com.google.protobuf:protobuf-java:3.6.1")
     implementation("io.grpc:grpc-stub:1.15.1")
@@ -51,7 +57,7 @@ dependencies {
     protobuf(files("ext/"))
 
     // Adding dependency for configuration from custom sourceSet
-    "sampleProtobuf"(files("ext/"))
+//    "sampleProtobuf"(files("ext/"))
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")

@@ -1,13 +1,19 @@
 package io.toxa108.pokerito.logicservice.server
 
 import io.grpc.ServerBuilder
-import org.springframework.stereotype.Component
+import io.toxa108.pokerito.logicservice.service.TableService
+import org.springframework.stereotype.Service
 
-@Component
-class Server {
-    val server: io.grpc.Server = ServerBuilder
-            .forPort(15001)
-//                .addService(ta)
-            .build()
+@Service
+class Server(private val tableService: TableService) {
+    private val server: io.grpc.Server
+
+    init {
+        server = ServerBuilder
+                .forPort(15001)
+                .addService(tableService)
+                .build()
+    }
+
 
 }
