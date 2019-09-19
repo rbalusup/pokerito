@@ -8,7 +8,7 @@ plugins {
     java
     idea
     id("com.google.protobuf") version "0.8.8"
-    kotlin("jvm") version "1.3.1"
+    kotlin("jvm") version "1.2.71"
     kotlin("plugin.spring") version "1.2.71"
 }
 
@@ -25,11 +25,6 @@ sourceSets {
     main {
         proto {
             srcDir("src/main/proto")
-        }
-    }
-    create("sample"){
-        proto {
-            srcDir("src/sample/protobuf")
         }
     }
 }

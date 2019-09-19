@@ -4,23 +4,26 @@ package model;
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
 
 option java_package = "io.toxa108.pokerito.userservice.proto";
 option java_multiple_files = true;
 
-service UserService {
-    rpc create (UserRequest) returns (UserResponse);
-    rpc get (UserRequest) returns (UserResponse);
+service WalletService {
+    rpc fill (FillWalletRequest) returns (WalletResponse);
+    rpc get (WalletRequest) returns (WalletResponse);
 }
 
-message UserRequest {
+message FillWalletRequest {
+    string wallet_id = 1;
+    string amount = 2;
+}
+
+message WalletRequest {
     string id = 1;
-    string email = 2;
-    string login = 3;
-    string password = 4;
 }
 
-message UserResponse {
+message WalletResponse {
     string id = 1;
     string email = 2;
     string login = 3;
