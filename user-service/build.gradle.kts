@@ -5,11 +5,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "2.1.8.RELEASE"
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
-    java
-    idea
     id("com.google.protobuf") version "0.8.8"
-    kotlin("jvm") version "1.2.71"
-    kotlin("plugin.spring") version "1.2.71"
+    kotlin("jvm") version "1.3.50"
+    kotlin("plugin.spring") version "1.3.50"
 }
 
 group = "io.toxa108.pokerito"
@@ -23,6 +21,11 @@ repositories {
 
 sourceSets {
     main {
+        proto {
+            srcDir("src/main/proto")
+        }
+    }
+    create("sample"){
         proto {
             srcDir("src/main/proto")
         }

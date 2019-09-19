@@ -12,7 +12,7 @@ class Server(private val userService: UserService) {
     init {
         server = ServerBuilder
                 .forPort(15003)
-//                .addService(userService)
+                .addService(userService)
                 .addService(ProtoReflectionService.newInstance())
                 .build()
                 .start()
