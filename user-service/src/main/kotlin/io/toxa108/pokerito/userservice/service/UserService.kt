@@ -1,6 +1,7 @@
 package io.toxa108.pokerito.userservice.service
 
 import io.grpc.stub.StreamObserver
+import io.toxa108.pokerito.userservice.ext.UserMapperFromEntityToGRPC
 import io.toxa108.pokerito.userservice.proto.UserRequest
 import io.toxa108.pokerito.userservice.proto.UserResponse
 import io.toxa108.pokerito.userservice.proto.UserServiceGrpc
@@ -11,13 +12,12 @@ import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.util.*
 
-typealias UserMapperFromEntityToGRPC = (UserEntity) -> UserResponse
 
 @Service
 class UserService(private val repo: UserRepository) : UserServiceGrpc.UserServiceImplBase() {
 
     private final val job = SupervisorJob()
-    val scope = CoroutineScope(Dispatchers.Default + job)
+    private final val scope = CoroutineScope(Dispatchers.Default + job)
 
     init {
         scope.launch {
@@ -34,14 +34,12 @@ class UserService(private val repo: UserRepository) : UserServiceGrpc.UserServic
     override fun create(request: UserRequest?, responseObserver: StreamObserver<UserResponse>?) {
         val id = UUID.randomUUID();
 
-        val save = GlobalScope.async(start = CoroutineStart.LAZY) {
-            request?.let {
-                repo.save(UserEntity(id, it.email, it.login, it.password, BigDecimal.ZERO))
+        request?.let {
+            scope.launch {
+                withContext (Dispatchers.Default) {
+                    repo.save(UserEntity(id, it.email, it.login, it.password, BigDecimal.ZERO))
+                }
             }
-        }
-
-        scope.launch {
-            save.await()
         }
 
         val user = UserResponse.newBuilder()
