@@ -44,6 +44,7 @@ dependencies {
     implementation("io.grpc:grpc-stub:1.15.1")
     implementation("io.grpc:grpc-protobuf:1.15.1")
     implementation("io.grpc:grpc-all:1.15.0")
+    implementation("io.grpc:grpc-services:1.15.1")
 
     if (JavaVersion.current().isJava9Compatible) {
         // Workaround for @javax.annotation.Generated

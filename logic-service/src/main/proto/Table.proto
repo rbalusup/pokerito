@@ -16,16 +16,18 @@ service TableService {
 }
 
 message TableRequest {
-    string name = 1;
+    string id = 1;
+    string name = 2;
 }
 
 message TableResponse {
-    string name = 1;
-    repeated User users = 2;
+    string id = 1;
+    string name = 2;
+    repeated User users = 3;
 }
 
 message AddUserToTableRequest {
-    string tableName = 1;
+    string tableId = 1;
     User user = 2;
 }
 
