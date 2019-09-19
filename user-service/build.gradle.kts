@@ -8,24 +8,28 @@ plugins {
     java
     idea
     id("com.google.protobuf") version "0.8.8"
-    kotlin("jvm") version "1.2.71"
+    kotlin("jvm") version "1.3.1"
     kotlin("plugin.spring") version "1.2.71"
 }
-
 
 group = "io.toxa108.pokerito"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
-
 repositories {
     maven("https://plugins.gradle.org/m2/")
+    jcenter()
 }
 
 sourceSets {
     main {
         proto {
             srcDir("src/main/proto")
+        }
+    }
+    create("sample"){
+        proto {
+            srcDir("src/sample/protobuf")
         }
     }
 }
@@ -35,6 +39,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.1")
 
     implementation("com.google.protobuf:protobuf-java:3.6.1")
     implementation("io.grpc:grpc-stub:1.15.1")

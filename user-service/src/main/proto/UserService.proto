@@ -9,4 +9,19 @@ option java_package = "io.toxa108.pokerito.userservice.proto";
 option java_multiple_files = true;
 
 service UserService {
+    rpc create (UserRequest) returns (UserResponse);
+    rpc get (UserRequest) returns (UserResponse);
+}
+
+message UserRequest {
+    string id = 1;
+    string email = 2;
+    string login = 3;
+    string password = 4;
+}
+
+message UserResponse {
+    string id = 1;
+    string email = 2;
+    string login = 3;
 }
