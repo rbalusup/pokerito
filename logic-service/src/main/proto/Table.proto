@@ -16,8 +16,7 @@ service TableService {
 }
 
 message TableRequest {
-    string id = 1;
-    string name = 2;
+    string name = 1;
 }
 
 message TableResponse {
@@ -27,7 +26,7 @@ message TableResponse {
 }
 
 message AddUserToTableRequest {
-    string tableId = 1;
+    string table_id = 1;
     User user = 2;
 }
 
