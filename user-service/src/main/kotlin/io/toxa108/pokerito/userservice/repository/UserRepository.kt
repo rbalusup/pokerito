@@ -5,6 +5,7 @@ import io.toxa108.pokerito.userservice.repository.entity.UserEntity
 import org.springframework.stereotype.Component
 import java.util.*
 import java.util.stream.Collectors.toList
+import kotlin.NoSuchElementException
 
 @Component
 class UserRepository(private val databaseProvider: DatabaseProvider): Repository<UUID, UserEntity> {
@@ -14,24 +15,39 @@ class UserRepository(private val databaseProvider: DatabaseProvider): Repository
     }
 
     override suspend fun save(data: UserEntity): UserEntity {
-        val r = databaseProvider
+        return databaseProvider
                 .connectionPool.sendQuery(
                     "insert into $TABLE_NAME (id, email, login, password, walletId) values " +
                             "(UNHEX(REPLACE('${data.id}', '-', '')), \"${data.email}\", \"${data.login}\", \"${data.password}\", UNHEX(REPLACE('${data.walletId}', '-', '')));"
-        ).get()
-
-        return r.rows?.get(0)?.let { map (it) } ?: throw DBConnectException("err")
+        )
+                .get()
+                .rows
+                ?.get(0)
+                ?.let { map (it) } ?: throw DBConnectException("err")
     }
 
     override suspend fun update(data: UserEntity): UserEntity {
-        return UserEntity(UUID.randomUUID(), "fd", "fd", "fdf", UUID.randomUUID())
+        return UserEntity(UUID.randomUUID(), "fd123", "fd", "fdf", UUID.randomUUID())
     }
 
     override suspend fun delete(id: UUID) {
     }
 
+    override suspend fun deleteAll() {
+        databaseProvider
+                .connectionPool
+                .sendPreparedStatement("delete from $TABLE_NAME")
+                .get()
+    }
+
     override suspend fun findById(id: UUID): UserEntity? {
-        return null
+        return databaseProvider
+                .connectionPool
+                .sendPreparedStatement("select * from $TABLE_NAME")
+                .get()
+                .rows
+                ?.get(0)
+                ?.let { it as UserEntity } ?: throw NoSuchElementException()
     }
 
     override suspend fun findAll(): List<UserEntity> {

@@ -3,3 +3,7 @@ database:
   password: bernard94
   url: localhost
   port: 3306
+
+logging:
+  level:
+    liquibase: INFO

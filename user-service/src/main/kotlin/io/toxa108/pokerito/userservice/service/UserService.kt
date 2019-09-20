@@ -20,15 +20,6 @@ class UserService(private val repo: UserRepository,
     private final val scope = CoroutineScope(Dispatchers.Default + job)
 
     init {
-        scope.launch {
-            repo.save(UserEntity(
-                    UUID.fromString("fb38077b-9d02-40bf-88cc-c19b4b69a2f4"),
-                    "dffd",
-                    "fdfd",
-                    "fdfd",
-                    UUID.randomUUID())
-            )
-        }
     }
 
     override fun create(request: UserRequest?, responseObserver: StreamObserver<UserResponse>?) {
