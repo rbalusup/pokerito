@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 @Service
 class Server(private val userService: UserService) {
     private val server: io.grpc.Server = ServerBuilder
-            .forPort(15003)
+            .forPort(15004)
             .addService(userService)
             .addService(ProtoReflectionService.newInstance())
             .build()

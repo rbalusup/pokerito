@@ -25,11 +25,6 @@ sourceSets {
             srcDir("src/main/proto")
         }
     }
-    create("sample"){
-        proto {
-            srcDir("src/main/proto")
-        }
-    }
 }
 
 dependencies {
@@ -38,7 +33,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.1")
-    implementation("com.github.jasync-sql:jasync-mysql:0.8.41")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.3.1")
+    implementation("com.github.jasync-sql:jasync-mysql:0.9.23")
     implementation("org.liquibase:liquibase-core:3.4.1")
     runtimeOnly("mysql:mysql-connector-java")
 

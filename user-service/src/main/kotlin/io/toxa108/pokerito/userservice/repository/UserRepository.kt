@@ -15,15 +15,14 @@ class UserRepository(private val databaseProvider: DatabaseProvider): Repository
     }
 
     override suspend fun save(data: UserEntity): UserEntity {
-        return databaseProvider
-                .connectionPool.sendQuery(
-                    "insert into $TABLE_NAME (id, email, login, password, walletId) values " +
-                            "(UNHEX(REPLACE('${data.id}', '-', '')), \"${data.email}\", \"${data.login}\", \"${data.password}\", UNHEX(REPLACE('${data.walletId}', '-', '')));"
-        )
-                .get()
-                .rows
-                ?.get(0)
-                ?.let { map (it) } ?: throw DBConnectException("err")
+        databaseProvider
+                .connectionPool.sendPreparedStatementAwait(
+                "insert into $TABLE_NAME (id, email, login, password, walletId) values " +
+                        "(UNHEX(REPLACE('${data.id}', '-', '')), \"${data.email}\", \"${data.login}\", \"${data.password}\", UNHEX(REPLACE('${data.walletId}', '-', '')));")
+                .rows.let {
+                    if (it.isEmpty()) throw DBConnectException("err")
+                    else return map(it[0])
+                }
     }
 
     override suspend fun update(data: UserEntity): UserEntity {
@@ -36,28 +35,21 @@ class UserRepository(private val databaseProvider: DatabaseProvider): Repository
     override suspend fun deleteAll() {
         databaseProvider
                 .connectionPool
-                .sendPreparedStatement("delete from $TABLE_NAME")
-                .get()
+                .sendPreparedStatementAwait("delete from $TABLE_NAME")
     }
 
     override suspend fun findById(id: UUID): UserEntity? {
         return databaseProvider
                 .connectionPool
-                .sendPreparedStatement("select * from $TABLE_NAME")
-                .get()
-                .rows
-                ?.get(0)
-                ?.let { it as UserEntity } ?: throw NoSuchElementException()
+                .sendPreparedStatementAwait("select * from $TABLE_NAME")
+                .rows[0].let { it as UserEntity } ?: throw NoSuchElementException()
     }
 
     override suspend fun findAll(): List<UserEntity> {
         return databaseProvider
                 .connectionPool
-                .sendPreparedStatement("select * from $TABLE_NAME")
-                .get()
-                .rows
-                ?.stream()
-                ?.map { r -> map(r) }
+                .sendPreparedStatementAwait("select * from $TABLE_NAME")
+                .rows.stream().map { r -> map(r) }
                 ?.collect(toList())?.let { it as List<UserEntity> } ?: listOf()
     }
 
