@@ -1,7 +1,6 @@
 package io.toxa108.pokerito.userservice.service
 
 import io.grpc.stub.StreamObserver
-import io.toxa108.pokerito.userservice.ext.UserMapperFromEntityToGRPC
 import io.toxa108.pokerito.userservice.proto.UserRequest
 import io.toxa108.pokerito.userservice.proto.UserResponse
 import io.toxa108.pokerito.userservice.proto.UserServiceGrpc
@@ -9,12 +8,13 @@ import io.toxa108.pokerito.userservice.repository.UserRepository
 import io.toxa108.pokerito.userservice.repository.entity.UserEntity
 import kotlinx.coroutines.*
 import org.springframework.stereotype.Service
-import java.math.BigDecimal
 import java.util.*
 
 
 @Service
-class UserService(private val repo: UserRepository) : UserServiceGrpc.UserServiceImplBase() {
+class UserService(private val repo: UserRepository,
+                  private val map: io.toxa108.pokerito.userservice.ext.Map
+) : UserServiceGrpc.UserServiceImplBase() {
 
     private final val job = SupervisorJob()
     private final val scope = CoroutineScope(Dispatchers.Default + job)
@@ -26,7 +26,7 @@ class UserService(private val repo: UserRepository) : UserServiceGrpc.UserServic
                     "dffd",
                     "fdfd",
                     "fdfd",
-                    BigDecimal.ZERO)
+                    UUID.randomUUID())
             )
         }
     }
@@ -37,7 +37,7 @@ class UserService(private val repo: UserRepository) : UserServiceGrpc.UserServic
         request?.let {
             scope.launch {
                 withContext (Dispatchers.Default) {
-                    repo.save(UserEntity(id, it.email, it.login, it.password, BigDecimal.ZERO))
+                    repo.save(UserEntity(id, it.email, it.login, it.password, UUID.randomUUID()))
                 }
             }
         }
@@ -54,19 +54,12 @@ class UserService(private val repo: UserRepository) : UserServiceGrpc.UserServic
 
     override fun get(request: UserRequest?, responseObserver: StreamObserver<UserResponse>?) {
         request?.let {
-            val map: UserMapperFromEntityToGRPC = {
-                from -> UserResponse.newBuilder()
-                    .setId(from.id.toString())
-                    .setEmail(from.email)
-                    .setLogin(from.login)
-                    .build()
-            }
 
             scope.launch {
-                val entity = withContext(Dispatchers.Default) { repo.byId(UUID.fromString(it.id)) }
+                val entity = withContext(Dispatchers.Default) { repo.findById(UUID.fromString(it.id)) }
 
                 if (entity != null) {
-                    responseObserver?.onNext(map.invoke(entity))
+                    responseObserver?.onNext(map.userEtoG.invoke(entity))
                     responseObserver?.onCompleted()
                 }
             }
