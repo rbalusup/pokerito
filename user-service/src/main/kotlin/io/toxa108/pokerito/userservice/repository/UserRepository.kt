@@ -5,7 +5,6 @@ import io.toxa108.pokerito.userservice.repository.entity.UserEntity
 import org.springframework.stereotype.Component
 import java.util.*
 import java.util.stream.Collectors.toList
-import kotlin.NoSuchElementException
 
 @Component
 class UserRepository(private val databaseProvider: DatabaseProvider): Repository<UUID, UserEntity> {
@@ -26,10 +25,19 @@ class UserRepository(private val databaseProvider: DatabaseProvider): Repository
     }
 
     override suspend fun update(data: UserEntity): UserEntity {
-        return UserEntity(UUID.randomUUID(), "fd123", "fd", "fdf", UUID.randomUUID())
+        databaseProvider
+                .connectionPool.sendPreparedStatementAwait(
+                "update $TABLE_NAME email = \"${data.email}\", login = \"${data.login}\", password = \"${data.password}\", walletId = UNHEX(REPLACE('${data.walletId}', '-', ''))")
+                .rows.let {
+                    if (it.isEmpty()) throw DBConnectException("err")
+                    else return map(it[0])
+                }
     }
 
     override suspend fun delete(id: UUID) {
+        databaseProvider
+                .connectionPool
+                .sendPreparedStatementAwait("delete from $TABLE_NAME where id = UNHEX(REPLACE('${id}', '-', ''))")
     }
 
     override suspend fun deleteAll() {
@@ -41,8 +49,12 @@ class UserRepository(private val databaseProvider: DatabaseProvider): Repository
     override suspend fun findById(id: UUID): UserEntity? {
         return databaseProvider
                 .connectionPool
-                .sendPreparedStatementAwait("select * from $TABLE_NAME")
-                .rows[0].let { it as UserEntity } ?: throw NoSuchElementException()
+                .sendPreparedStatementAwait("select * from $TABLE_NAME where id = UNHEX(REPLACE('${id}', '-', ''))")
+                .rows
+                .let {
+                    return if (it.isEmpty()) null
+                    else map(it[0])
+                }
     }
 
     override suspend fun findAll(): List<UserEntity> {
