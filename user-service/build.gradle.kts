@@ -38,6 +38,12 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.1")
+    implementation("com.github.jasync-sql:jasync-mysql:0.8.41")
+    implementation("org.liquibase:liquibase-core:3.4.1")
+    runtimeOnly("mysql:mysql-connector-java")
+
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("com.h2database:h2")
 
     implementation("com.google.protobuf:protobuf-java:3.6.1")
     implementation("io.grpc:grpc-stub:1.15.1")

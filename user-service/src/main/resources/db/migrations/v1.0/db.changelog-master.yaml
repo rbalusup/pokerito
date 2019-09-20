@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: /db/migrations/v1.0/db.migration.1.sql
+      relativeToChangelogFile: false
