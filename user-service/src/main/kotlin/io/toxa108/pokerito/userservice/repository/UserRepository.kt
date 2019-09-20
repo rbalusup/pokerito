@@ -14,7 +14,13 @@ class UserRepository(private val databaseProvider: DatabaseProvider): Repository
     }
 
     override suspend fun save(data: UserEntity): UserEntity {
-        return UserEntity(UUID.randomUUID(), "fd", "fd", "fdf", UUID.randomUUID())
+        val r = databaseProvider
+                .connectionPool.sendQuery(
+                    "insert into $TABLE_NAME (id, email, login, password, walletId) values " +
+                            "(UNHEX(REPLACE('${data.id}', '-', '')), \"${data.email}\", \"${data.login}\", \"${data.password}\", UNHEX(REPLACE('${data.walletId}', '-', '')));"
+        ).get()
+
+        return r.rows?.get(0)?.let { map (it) } ?: throw DBConnectException("err")
     }
 
     override suspend fun update(data: UserEntity): UserEntity {
@@ -29,20 +35,14 @@ class UserRepository(private val databaseProvider: DatabaseProvider): Repository
     }
 
     override suspend fun findAll(): List<UserEntity> {
-//        return databaseProvider.connectionPool.sendPreparedStatement("select * from $TABLE_NAME")
-//                .get()
-//                .rows
-        val result = databaseProvider
+        return databaseProvider
                 .connectionPool
-                .sendPreparedStatement("select * from poker_user")
+                .sendPreparedStatement("select * from $TABLE_NAME")
                 .get()
-
-        val resultArray = result.rows
+                .rows
                 ?.stream()
-                ?.map { map(it) }
-                ?.collect(toList())
-
-        return resultArray as List<UserEntity>
+                ?.map { r -> map(r) }
+                ?.collect(toList())?.let { it as List<UserEntity> } ?: listOf()
     }
 
     private fun map (rowData: RowData): UserEntity {
@@ -54,5 +54,4 @@ class UserRepository(private val databaseProvider: DatabaseProvider): Repository
                 .walletId(UUID.nameUUIDFromBytes(rowData["walletId"] as ByteArray))
                 .build()
     }
-
 }
