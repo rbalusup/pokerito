@@ -5,12 +5,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Profile
 import javax.sql.DataSource
 
 @SpringBootApplication
 class UserServiceApplication {
 
-    @Bean()
+//    @Bean()
+    @Profile("!test")
     fun getDataSource(): DataSource {
         val dataSourceBuilder = DataSourceBuilder.create()
         dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver")
@@ -21,16 +23,16 @@ class UserServiceApplication {
         return dataSourceBuilder.build()
     }
 
-//    @Bean
+    @Bean
 //    @Profile("test")
-//    fun getDataSourceTest(): DataSource {
-//        val dataSourceBuilder = DataSourceBuilder.create()
-//        dataSourceBuilder.driverClassName("org.h2.Driver")
-//        dataSourceBuilder.url("jdbc:h2:mem:test")
-//        dataSourceBuilder.username("SA")
-//        dataSourceBuilder.password("")
-//        return dataSourceBuilder.build()
-//    }
+    fun getDataSourceTest(): DataSource {
+        val dataSourceBuilder = DataSourceBuilder.create()
+        dataSourceBuilder.driverClassName("org.h2.Driver")
+        dataSourceBuilder.url("jdbc:h2:mem:test")
+        dataSourceBuilder.username("SA")
+        dataSourceBuilder.password("")
+        return dataSourceBuilder.build()
+    }
 
     @Bean
     fun liquibase(dataSource: DataSource): SpringLiquibase {

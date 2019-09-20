@@ -1,9 +1,9 @@
 package io.toxa108.pokerito.userservice.repository
 
 import io.toxa108.pokerito.userservice.repository.entity.UserEntity
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
@@ -22,17 +22,20 @@ class UserRepositoryTest {
     @Test
     @DisplayName("UserRepositoryTest")
     fun test() {
-        val myScope = GlobalScope
         runBlocking {
-            myScope.launch {
-                val uuid = UUID.randomUUID()
-                var save = repo.save(UserEntity(uuid, "fd123", "fd", "fdf", UUID.randomUUID()))
-
-                val list = repo.findAll()
-                assert(save == list.last())
-                assert(1 == 2)
-                repo.findById(uuid)?.id?.equals(uuid)?.let { assert(it) } ?: assert(false)
+            val uuid = UUID.randomUUID()
+            withContext(Dispatchers.Default) {
+                repo.deleteAll()
             }
+            withContext(Dispatchers.Default) {
+                repo.save(UserEntity(uuid, "fd123", "fd", "fdf", UUID.randomUUID()))
+            }
+
+            val list = withContext(Dispatchers.Default) { repo.findAll() }
+            assert (list.size == 1)
+
+            val founded = withContext(Dispatchers.Default) { repo.findById(uuid) }
+            assert(founded?.id == uuid)
         }
     }
 }

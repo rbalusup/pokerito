@@ -1,8 +1,8 @@
 package io.toxa108.pokerito.userservice.repository
 
 interface Repository<ID, T> {
-    suspend fun save(data: T): T
-    suspend fun update(data: T): T
+    suspend fun save(data: T)
+    suspend fun update(data: T)
     suspend fun delete(id: ID)
     suspend fun deleteAll()
     suspend fun findById(id: ID): T?

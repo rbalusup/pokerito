@@ -36,3 +36,6 @@ suspend fun Connection.sendPreparedStatementAwait(
 
 suspend fun Connection.sendPreparedStatementAwait(query: String): QueryResult
         = sendPreparedStatement(query).await()
+
+suspend fun Connection.sendQueryAwait(query: String): QueryResult
+        = sendQuery(query).await()

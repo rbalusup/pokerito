@@ -34,7 +34,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.3.1")
-    implementation("com.github.jasync-sql:jasync-mysql:0.9.23")
+    implementation("com.github.jasync-sql:jasync-mysql:1.0.7")
     implementation("org.liquibase:liquibase-core:3.4.1")
     runtimeOnly("mysql:mysql-connector-java")
 
@@ -56,8 +56,8 @@ dependencies {
     // Extra proto source files besides the ones residing under
     // "src/main".
     protobuf(files("lib/protos.tar.gz"))
-    protobuf(files("ext/"))
 
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.3.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
     testImplementation("io.projectreactor:reactor-test")
