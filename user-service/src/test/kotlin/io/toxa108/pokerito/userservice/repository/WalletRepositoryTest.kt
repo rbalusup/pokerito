@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
 import java.math.BigDecimal
+import java.math.MathContext
 import java.util.*
 
 @RunWith(SpringRunner::class)
@@ -25,7 +26,7 @@ class WalletRepositoryTest {
     fun test() {
         runBlocking {
             val uuid = UUID.randomUUID()
-            val amount = BigDecimal.valueOf(100.100)
+            val amount = BigDecimal(100.1, MathContext(11))
             val testUserEntity = WalletEntity(uuid, amount)
 
             withContext(Dispatchers.Default) { repo.deleteAll() }

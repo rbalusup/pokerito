@@ -2,3 +2,6 @@ databaseChangeLog:
   - include:
       file: /db/migrations/v1.0/db.migration.1.sql
       relativeToChangelogFile: false
+  - include:
+      file: /db/migrations/v1.0/db.migration.2.sql
+      relativeToChangelogFile: false
