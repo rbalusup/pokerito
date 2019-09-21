@@ -1,4 +1,4 @@
-package io.toxa108.pokerito.userservice.repository
+package io.toxa108.pokerito.userservice.repository.db
 
 import com.github.jasync.sql.db.Configuration
 import com.github.jasync.sql.db.Connection
