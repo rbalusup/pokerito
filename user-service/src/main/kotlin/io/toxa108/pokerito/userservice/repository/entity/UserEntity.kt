@@ -23,11 +23,11 @@ data class UserEntity(
         fun walletId(walletId: UUID) = apply { this.walletId = walletId }
 
         fun build() = UserEntity(
-                id,
-                email,
-                login,
-                password,
-                walletId
+                id = id,
+                email = email,
+                login = login,
+                password = password,
+                walletId = walletId
         )
     }
 }

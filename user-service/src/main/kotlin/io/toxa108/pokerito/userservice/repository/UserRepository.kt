@@ -2,6 +2,8 @@ package io.toxa108.pokerito.userservice.repository
 
 import com.github.jasync.sql.db.RowData
 import com.github.jasync.sql.db.asSuspending
+import io.toxa108.pokerito.userservice.repository.db.DBConnectException
+import io.toxa108.pokerito.userservice.repository.db.DatabaseProvider
 import io.toxa108.pokerito.userservice.repository.entity.UserEntity
 import org.springframework.stereotype.Component
 import java.util.*
@@ -30,7 +32,7 @@ class UserRepository(private val databaseProvider: DatabaseProvider): Repository
                 .connectionPool
                 .asSuspending
                 .sendQuery(
-                "update $TABLE_NAME email = \"${data.email}\", login = \"${data.login}\", password = \"${data.password}\", walletId = UUID_TO_BIN('${data.walletId}', true)")
+                "update $TABLE_NAME email = \"${data.email}\", login = \"${data.login}\", password = \"${data.password}\", walletId = UUID_TO_BIN('${data.walletId}', true) where id = UUID_TO_BIN('${data.id}', true)")
                 .rows
                 .let {
                     if (it.isEmpty()) throw DBConnectException("err")
