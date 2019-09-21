@@ -12,18 +12,18 @@ import org.springframework.stereotype.Component
 @Component
 class DatabaseProvider {
     private val configuration = Configuration(
-            "toxa",
+            "toxa108",
             "localhost",
             3306,
-            "bernard94",
+            "Bernard-74-94Q",
             "poker")
     val connectionPool = ConnectionPool(
             factory = MySQLConnectionFactory(configuration),
             configuration = ConnectionPoolConfigurationBuilder(
-                    username = "toxa",
+                    username = "toxa108",
                     host = "localhost",
                     port = 3306,
-                    password = "bernard94",
+                    password = "Bernard-74-94Q",
                     database = "poker"
             ).build()
     )

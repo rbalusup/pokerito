@@ -5,25 +5,24 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Profile
 import javax.sql.DataSource
 
 @SpringBootApplication
 class UserServiceApplication {
 
-//    @Bean()
-    @Profile("!test")
+    @Bean()
+//    @Profile("!test")
     fun getDataSource(): DataSource {
         val dataSourceBuilder = DataSourceBuilder.create()
         dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver")
         dataSourceBuilder.url("jdbc:mysql://localhost:3306/poker")
-        dataSourceBuilder.username("toxa")
-        dataSourceBuilder.password("bernard94")
+        dataSourceBuilder.username("toxa108")
+        dataSourceBuilder.password("Bernard-74-94Q")
 
         return dataSourceBuilder.build()
     }
 
-    @Bean
+//    @Bean
 //    @Profile("test")
     fun getDataSourceTest(): DataSource {
         val dataSourceBuilder = DataSourceBuilder.create()

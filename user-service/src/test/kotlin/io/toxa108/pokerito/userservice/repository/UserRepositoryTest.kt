@@ -24,18 +24,24 @@ class UserRepositoryTest {
     fun test() {
         runBlocking {
             val uuid = UUID.randomUUID()
-            withContext(Dispatchers.Default) {
-                repo.deleteAll()
-            }
-            withContext(Dispatchers.Default) {
-                repo.save(UserEntity(uuid, "fd123", "fd", "fdf", UUID.randomUUID()))
-            }
+            val walletId = UUID.randomUUID()
+            val email = "chexovlixe@email.com"
+            val login = "toxa109"
+            val password = "123321"
+            val testUserEntity = UserEntity(uuid, email, login, password, walletId)
 
+            withContext(Dispatchers.Default) { repo.deleteAll() }
+            withContext(Dispatchers.Default) { repo.save(testUserEntity) }
             val list = withContext(Dispatchers.Default) { repo.findAll() }
-            assert (list.size == 1)
-
             val founded = withContext(Dispatchers.Default) { repo.findById(uuid) }
+
+            assert (list.size == 1)
             assert(founded?.id == uuid)
+            assert(founded?.email == email)
+            assert(founded?.login == login)
+            assert(founded?.password == password)
+            assert(founded?.walletId == walletId)
+            assert(founded!! == testUserEntity)
         }
     }
 }
