@@ -1,6 +1,7 @@
 package io.toxa108.pokerito.userservice.repository
 
 import com.github.jasync.sql.db.RowData
+import com.github.jasync.sql.db.SuspendingConnection
 import com.github.jasync.sql.db.asSuspending
 import io.toxa108.pokerito.userservice.repository.db.DBConnectException
 import io.toxa108.pokerito.userservice.repository.db.DatabaseProvider
@@ -16,10 +17,18 @@ class UserRepository(private val databaseProvider: DatabaseProvider): Repository
         const val TABLE_NAME = "poker_user"
     }
 
+    private val connection = databaseProvider.connectionPool.asSuspending
+
+    override suspend fun saveInTx(connection: SuspendingConnection, data: UserEntity) {
+        save(connection, data)
+    }
+
     override suspend fun save(data: UserEntity) {
-        databaseProvider
-                .connectionPool
-                .asSuspending.sendQuery(
+        save(this.connection, data)
+    }
+
+    private suspend fun save(connection: SuspendingConnection, data: UserEntity) {
+        connection.sendQuery(
                 "insert into $TABLE_NAME (id, email, login, password, walletId) values " +
                         "(UUID_TO_BIN('${data.id}', true), \"${data.email}\", \"${data.login}\", \"${data.password}\", UUID_TO_BIN('${data.walletId}', true))")
                 .let {
@@ -27,10 +36,16 @@ class UserRepository(private val databaseProvider: DatabaseProvider): Repository
                 }
     }
 
+    override suspend fun updateInTx(connection: SuspendingConnection, data: UserEntity) {
+        update(connection, data)
+    }
+
     override suspend fun update(data: UserEntity) {
-        databaseProvider
-                .connectionPool
-                .asSuspending
+        update(this.connection, data)
+    }
+
+    private suspend fun update(connection: SuspendingConnection, data: UserEntity) {
+        connection
                 .sendQuery(
                 "update $TABLE_NAME email = \"${data.email}\", login = \"${data.login}\", password = \"${data.password}\", walletId = UUID_TO_BIN('${data.walletId}', true) where id = UUID_TO_BIN('${data.id}', true)")
                 .rows
