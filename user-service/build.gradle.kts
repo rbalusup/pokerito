@@ -6,6 +6,7 @@ plugins {
     id("org.springframework.boot") version "2.1.8.RELEASE"
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
     id("com.google.protobuf") version "0.8.8"
+    idea
     kotlin("jvm") version "1.3.50"
     kotlin("plugin.spring") version "1.3.50"
 }
@@ -24,6 +25,15 @@ sourceSets {
         proto {
             srcDir("src/main/proto")
         }
+    }
+}
+
+idea {
+    module {
+        // proto files and generated Java files are automatically added as
+        // source dirs.
+        // If you have additional sources, add them here:
+        sourceDirs.plusAssign(file("/home/toxa/Work/java/github/proto"));
     }
 }
 

@@ -55,10 +55,6 @@ dependencies {
     // Extra proto source files besides the ones residing under
     // "src/main".
     protobuf(files("lib/protos.tar.gz"))
-    protobuf(files("ext/"))
-
-    // Adding dependency for configuration from custom sourceSet
-//    "sampleProtobuf"(files("ext/"))
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
@@ -84,6 +80,8 @@ kotlin {
 }
 
 protobuf {
+    generatedFilesBaseDir = "/home/toxa/Work/java/github/proto"
+
     protoc {
         // The artifact spec for the Protobuf Compiler
         artifact = "com.google.protobuf:protoc:3.6.1"
