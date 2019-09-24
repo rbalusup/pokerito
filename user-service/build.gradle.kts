@@ -1,3 +1,4 @@
+import com.google.protobuf.gradle.protobuf
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -64,4 +65,8 @@ tasks.test {
 
 kotlin {
     experimental.coroutines = Coroutines.ENABLE
+}
+
+protobuf {
+    generatedFilesBaseDir = "proto-gen"
 }
