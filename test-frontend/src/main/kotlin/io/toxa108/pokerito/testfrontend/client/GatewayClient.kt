@@ -22,7 +22,7 @@ class GatewayClient {
                         .setPassword("bernard94")
                         .build())
 
-        System.out.println(helloResponse)
+        println(helloResponse)
 
         channel.shutdown()
     }
