@@ -5,14 +5,17 @@ import io.toxa108.pokerito.userservice.proto.UserRequest
 import io.toxa108.pokerito.userservice.proto.UserResponse
 import io.toxa108.pokerito.userservice.proto.UserServiceGrpc
 import io.toxa108.pokerito.userservice.repository.UserRepository
+import io.toxa108.pokerito.userservice.repository.WalletRepository
 import io.toxa108.pokerito.userservice.repository.entity.UserEntity
+import io.toxa108.pokerito.userservice.repository.entity.WalletEntity
 import kotlinx.coroutines.*
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
 import java.util.*
 
-
 @Service
-class UserService(private val repo: UserRepository,
+class UserService(private val userRepository: UserRepository,
+                  private val walletRepository: WalletRepository,
                   private val map: io.toxa108.pokerito.userservice.ext.Map
 ) : UserServiceGrpc.UserServiceImplBase() {
 
@@ -25,7 +28,15 @@ class UserService(private val repo: UserRepository,
         request?.let {
             scope.launch {
                 withContext (Dispatchers.Default) {
-                    repo.save(UserEntity(id, it.email, it.login, it.password, UUID.randomUUID()))
+                    val walletId = UUID.randomUUID()
+
+                    walletRepository.save(
+                            WalletEntity.Builder()
+                                    .id(walletId)
+                                    .amount(BigDecimal.ZERO)
+                                    .build()
+                    )
+                    userRepository.save(UserEntity(id, it.email, it.login, it.password, walletId))
                 }
             }
         }
@@ -44,7 +55,7 @@ class UserService(private val repo: UserRepository,
         request?.let {
 
             scope.launch {
-                val entity = withContext(Dispatchers.Default) { repo.findById(UUID.fromString(it.id)) }
+                val entity = withContext(Dispatchers.Default) { userRepository.findById(UUID.fromString(it.id)) }
 
                 if (entity != null) {
                     responseObserver?.onNext(map.userEtoG.invoke(entity))

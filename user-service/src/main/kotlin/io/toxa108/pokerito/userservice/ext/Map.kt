@@ -1,7 +1,7 @@
 package io.toxa108.pokerito.userservice.ext
 
-import io.toxa108.pokerito.testfrontend.proto.UserRequest
-import io.toxa108.pokerito.testfrontend.proto.UserResponse
+import io.toxa108.pokerito.userservice.proto.UserRequest
+import io.toxa108.pokerito.userservice.proto.UserResponse
 import io.toxa108.pokerito.userservice.repository.entity.UserEntity
 import org.springframework.stereotype.Component
 import java.util.*

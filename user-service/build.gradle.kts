@@ -1,4 +1,4 @@
-import com.google.protobuf.gradle.protobuf
+import com.google.protobuf.gradle.*
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -20,8 +20,6 @@ repositories {
     maven("https://plugins.gradle.org/m2/")
     jcenter()
 }
-
-sourceSets["main"].java.srcDir("$projectDir/proto-gen")
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
@@ -68,5 +66,24 @@ kotlin {
 }
 
 protobuf {
-    generatedFilesBaseDir = "proto-gen"
+    protoc {
+        // The artifact spec for the Protobuf Compiler
+        artifact = "com.google.protobuf:protoc:3.6.1"
+    }
+    plugins {
+        // Optional: an artifact spec for a protoc plugin, with "grpc" as
+        // the identifier, which can be referred to in the "plugins"
+        // container of the "generateProtoTasks" closure.
+        id("grpc") {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.15.1"
+        }
+    }
+    generateProtoTasks {
+        ofSourceSet("main").forEach {
+            it.plugins {
+                // Apply the "grpc" plugin whose spec is defined above, without options.
+                id("grpc")
+            }
+        }
+    }
 }
