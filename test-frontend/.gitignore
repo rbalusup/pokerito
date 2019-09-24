@@ -1,10 +1,10 @@
 HELP.md
 .gradle
 build/
-proto-gen/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**
+proto-gen/
 
 ### STS ###
 .apt_generated

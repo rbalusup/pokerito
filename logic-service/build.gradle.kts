@@ -12,7 +12,7 @@ plugins {
     kotlin("plugin.spring") version "1.2.71"
 }
 
-group = "io.toxa108.pokerito"
+group = "io.toxa108.io.pokerito"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
@@ -27,11 +27,6 @@ sourceSets {
             srcDir("src/main/proto")
         }
     }
-//    create("sample"){
-//        proto {
-//            srcDir("src/sample/protobuf")
-//        }
-//    }
 }
 
 dependencies {
@@ -80,7 +75,7 @@ kotlin {
 }
 
 protobuf {
-    generatedFilesBaseDir = "/home/toxa/Work/java/github/proto"
+    generatedFilesBaseDir = "proto-gen"
 
     protoc {
         // The artifact spec for the Protobuf Compiler
@@ -102,4 +97,26 @@ protobuf {
             }
         }
     }
+}
+val protoCopy = tasks.register("protoCopy") {
+    doLast {
+
+        copy {
+            delete ("/home/toxa/Work/java/github/test-frontend/proto-gen")
+            from ("proto-gen")
+            into ("/home/toxa/Work/java/github/test-frontend/proto-gen")
+            println("Generated .proto were copied to test-frontend")
+        }
+
+        copy {
+            delete ("/home/toxa/Work/java/github/user-service/proto-gen")
+            from ("proto-gen")
+            into ("/home/toxa/Work/java/github/user-service/proto-gen")
+            println("Generated .proto were copied to user-service")
+        }
+    }
+}
+
+tasks.compileKotlin {
+    dependsOn(protoCopy)
 }

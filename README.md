@@ -1,4 +1,4 @@
-# pokerito
+# io.pokerito
 How does the poker game look like?
 
 Thoughts. <br>

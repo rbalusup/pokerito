@@ -1,1 +1,1 @@
-rootProject.name = "pokerito"
+rootProject.name = "io.pokerito"

@@ -19,9 +19,6 @@ class UserService(private val repo: UserRepository,
     private final val job = SupervisorJob()
     private final val scope = CoroutineScope(Dispatchers.Default + job)
 
-    init {
-    }
-
     override fun create(request: UserRequest?, responseObserver: StreamObserver<UserResponse>?) {
         val id = UUID.randomUUID();
 

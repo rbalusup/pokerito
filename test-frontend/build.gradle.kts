@@ -5,10 +5,11 @@ plugins {
     id("org.springframework.boot") version "2.1.8.RELEASE"
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
     id("com.google.protobuf") version "0.8.8"
-    idea
-    java
+
     kotlin("jvm") version "1.3.50"
     kotlin("plugin.spring") version "1.3.50"
+    idea
+    java
 }
 
 group = "io.toxa108.io.pokerito"
@@ -29,36 +30,18 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.3.1")
-    implementation("com.github.jasync-sql:jasync-mysql:1.0.7")
-    implementation("org.liquibase:liquibase-core:3.4.1")
-    runtimeOnly("mysql:mysql-connector-java")
-
-    implementation("org.springframework.boot:spring-boot-starter-jdbc")
-    implementation("com.h2database:h2")
 
     implementation("com.google.protobuf:protobuf-java:3.6.1")
     implementation("io.grpc:grpc-stub:1.15.1")
     implementation("io.grpc:grpc-protobuf:1.15.1")
     implementation("io.grpc:grpc-all:1.15.0")
     implementation("io.grpc:grpc-services:1.15.1")
-
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.3.1")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
-    testImplementation("io.projectreactor:reactor-test")
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "1.8"
-    }
-}
-
-tasks.test {
-    useJUnitPlatform()
-    testLogging {
-        events("passed", "skipped", "failed")
     }
 }
 
