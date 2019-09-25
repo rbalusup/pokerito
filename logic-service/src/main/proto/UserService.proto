@@ -11,6 +11,7 @@ option java_multiple_files = true;
 service UserService {
     rpc create (UserRequest) returns (UserResponse);
     rpc get (UserRequest) returns (UserResponse);
+    rpc auth (UserRequest) returns (AuthResponse);
 }
 
 message UserRequest {
@@ -25,4 +26,8 @@ message UserResponse {
     string email = 2;
     string login = 3;
     string usd = 4;
+}
+
+message AuthResponse {
+    string token = 1;
 }

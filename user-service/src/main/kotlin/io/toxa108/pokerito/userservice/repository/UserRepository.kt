@@ -55,23 +55,15 @@ class UserRepository(private val databaseProvider: DatabaseProvider): Repository
     }
 
     override suspend fun delete(id: UUID) {
-        databaseProvider
-                .connectionPool
-                .asSuspending
-                .sendQuery("delete from $TABLE_NAME where id = UUID_TO_BIN('${id}', true)")
+        connection.sendQuery("delete from $TABLE_NAME where id = UUID_TO_BIN('${id}', true)")
     }
 
     override suspend fun deleteAll() {
-        databaseProvider
-                .connectionPool
-                .asSuspending
-                .sendQuery("delete from $TABLE_NAME")
+        connection.sendQuery("delete from $TABLE_NAME")
     }
 
     override suspend fun findById(id: UUID): UserEntity? =
-        databaseProvider
-                .connectionPool
-                .asSuspending
+        connection
                 .sendQuery("select BIN_TO_UUID(id, true) AS id, email, login, password, BIN_TO_UUID(walletId, true) AS walletId from $TABLE_NAME where id = UUID_TO_BIN('${id}', true)")
                 .rows
                 .let {
@@ -79,10 +71,16 @@ class UserRepository(private val databaseProvider: DatabaseProvider): Repository
                     else map(it[0])
                 }
 
+    suspend fun findByLogin(login: String): UserEntity? =
+            connection.sendQuery("select BIN_TO_UUID(id, true) AS id, email, login, password, BIN_TO_UUID(walletId, true) AS walletId from $TABLE_NAME where login = '$login'")
+                    .rows
+                    .let {
+                        return if (it.isEmpty()) null
+                        else map(it[0])
+                    }
+
     override suspend fun findAll(): List<UserEntity> {
-        return databaseProvider
-                .connectionPool
-                .asSuspending
+        return connection
                 .sendQuery("select BIN_TO_UUID(id, true) AS id, email, login, password, BIN_TO_UUID(walletId, true) AS walletId from $TABLE_NAME")
                 .rows.stream().map { r -> map(r) }
                 ?.collect(toList())?.let { it as List<UserEntity> } ?: listOf()

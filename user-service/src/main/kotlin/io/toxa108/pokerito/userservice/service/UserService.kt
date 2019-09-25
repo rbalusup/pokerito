@@ -1,6 +1,8 @@
 package io.toxa108.pokerito.userservice.service
 
+import io.grpc.Status
 import io.grpc.stub.StreamObserver
+import io.toxa108.pokerito.userservice.proto.AuthResponse
 import io.toxa108.pokerito.userservice.proto.UserRequest
 import io.toxa108.pokerito.userservice.proto.UserResponse
 import io.toxa108.pokerito.userservice.proto.UserServiceGrpc
@@ -63,5 +65,20 @@ class UserService(private val userRepository: UserRepository,
                 }
             }
         }
+    }
+
+    override fun auth(request: UserRequest?, responseObserver: StreamObserver<AuthResponse>?) {
+        request?.let {
+            runBlocking {
+                val entity = withContext(Dispatchers.Default) { userRepository.findByLogin(it.login)}
+                if (entity?.password == it.password) {
+                    responseObserver?.onNext(AuthResponse.newBuilder().setToken("sds").build())
+                    responseObserver?.onCompleted()
+                }
+            }
+        } ?: responseObserver?.onError(Status.PERMISSION_DENIED
+                    .withDescription("Incorrect login or password!")
+                    .asRuntimeException())
+
     }
 }

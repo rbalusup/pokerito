@@ -30,6 +30,12 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.3.1")
 
+    implementation("io.jsonwebtoken:jjwt:0.9.1")
+    implementation("javax.xml.bind:jaxb-api:2.2.11")
+    implementation("com.sun.xml.bind:jaxb-core:2.2.11")
+    implementation("com.sun.xml.bind:jaxb-impl:2.2.11")
+    implementation("javax.activation:activation:1.1.1")
+
     implementation("com.google.protobuf:protobuf-java:3.6.1")
     implementation("io.grpc:grpc-stub:1.15.1")
     implementation("io.grpc:grpc-protobuf:1.15.1")

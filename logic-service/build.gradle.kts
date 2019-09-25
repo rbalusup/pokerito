@@ -100,14 +100,12 @@ val protoCopy = tasks.register("protoCopy") {
     doLast {
 
         copy {
-//            delete ("/home/toxa/Work/java/github/test-frontend/proto-gen")
             from ("build/generated/source/proto")
             into ("/home/toxa/Work/java/github/test-frontend/build/generated/source/proto")
             println("Generated .proto were copied to test-frontend")
         }
 
         copy {
-//            delete ("/home/toxa/Work/java/github/user-service/proto-gen")
             from ("build/generated/source/proto")
             into ("/home/toxa/Work/java/github/user-service/build/generated/source/proto")
             println("Generated .proto were copied to user-service")
