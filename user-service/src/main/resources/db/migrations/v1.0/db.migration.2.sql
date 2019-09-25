@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset toxa108:2
+--changeset toxa108:user_service_2
 CREATE TABLE poker_wallet
 (
      id BINARY(16) NOT NULL PRIMARY KEY
