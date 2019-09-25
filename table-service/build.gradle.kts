@@ -41,6 +41,12 @@ dependencies {
     implementation("io.grpc:grpc-all:1.15.0")
     implementation("io.grpc:grpc-services:1.15.1")
 
+    implementation("io.jsonwebtoken:jjwt:0.9.1")
+    implementation("javax.xml.bind:jaxb-api:2.2.11")
+    implementation("com.sun.xml.bind:jaxb-core:2.2.11")
+    implementation("com.sun.xml.bind:jaxb-impl:2.2.11")
+    implementation("javax.activation:activation:1.1.1")
+
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.3.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
