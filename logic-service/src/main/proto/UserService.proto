@@ -25,9 +25,13 @@ message UserResponse {
     string id = 1;
     string email = 2;
     string login = 3;
-    string usd = 4;
+    string walletId = 4;
 }
 
 message AuthResponse {
-    string token = 1;
+    string id = 1;
+    string email = 2;
+    string login = 3;
+    string walletId = 4;
+    string token = 5;
 }

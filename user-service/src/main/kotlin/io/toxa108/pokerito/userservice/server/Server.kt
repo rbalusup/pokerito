@@ -2,6 +2,7 @@ package io.toxa108.pokerito.userservice.server
 
 import io.grpc.netty.NettyServerBuilder
 import io.grpc.protobuf.services.ProtoReflectionService
+import io.toxa108.pokerito.userservice.interceptor.AuthorizationServerInterceptor
 import io.toxa108.pokerito.userservice.service.UserService
 import org.springframework.stereotype.Service
 
@@ -10,6 +11,7 @@ class Server(private val userService: UserService) {
     private val server: io.grpc.Server = NettyServerBuilder
             .forPort(15004)
             .addService(userService)
+            .intercept(AuthorizationServerInterceptor())
             .addService(ProtoReflectionService.newInstance())
             .build()
 

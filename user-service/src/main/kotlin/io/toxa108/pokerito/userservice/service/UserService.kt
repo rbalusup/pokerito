@@ -18,7 +18,8 @@ import java.util.*
 @Service
 class UserService(private val userRepository: UserRepository,
                   private val walletRepository: WalletRepository,
-                  private val map: io.toxa108.pokerito.userservice.ext.Map
+                  private val map: io.toxa108.pokerito.userservice.ext.Map,
+                  private val authService: AuthService
 ) : UserServiceGrpc.UserServiceImplBase() {
 
     private final val job = SupervisorJob()
@@ -85,14 +86,20 @@ class UserService(private val userRepository: UserRepository,
         request?.let {
             runBlocking {
                 val entity = userRepository.findByLogin(it.login)
-                if (entity?.password == it.password) {
-                    responseObserver?.onNext(AuthResponse.newBuilder().setToken("sds").build())
+                if (entity != null && entity.password == it.password) {
+                    val token = authService.generateToken(entity.id)
+                    responseObserver?.onNext(AuthResponse.newBuilder()
+                            .setToken(token)
+                            .setId(entity.id.toString())
+                            .setLogin(entity.login)
+                            .setEmail(entity.email)
+                            .build()
+                    )
                     responseObserver?.onCompleted()
                 }
             }
         } ?: responseObserver?.onError(Status.PERMISSION_DENIED
                     .withDescription("Incorrect login or password!")
                     .asRuntimeException())
-
     }
 }

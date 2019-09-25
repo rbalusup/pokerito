@@ -1,8 +1,6 @@
 package io.toxa108.pokerito.userservice.interceptor
 
 import io.grpc.*
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.Jws
 import io.jsonwebtoken.Jwts
 import io.toxa108.pokerito.userservice.Const
 
@@ -25,8 +23,8 @@ class AuthorizationServerInterceptor: ServerInterceptor {
         } else {
             try {
                 val token = value.substring(Const.BEARER_TYPE.length).trim();
-                val claims: Jws<Claims> = parser.parseClaimsJws(token);
-                val ctx = Context.current().withValue(Const.CLIENT_ID_CONTEXT_KEY, claims.body.subject);
+                val jwt = parser.parse(token);
+                val ctx = Context.current().withValue(Const.CLIENT_ID_CONTEXT_KEY, jwt.body as String);
                 return Contexts.interceptCall(ctx, call, headers, next);
             } catch (e: Exception) {
                 Status.UNAUTHENTICATED.withDescription(e.message).withCause(e);

@@ -1,13 +1,13 @@
 package io.toxa108.pokerito.testfrontend
 
-import io.toxa108.pokerito.testfrontend.client.GatewayClient
+import io.toxa108.pokerito.testfrontend.service.UserService
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class GameLogic constructor(private val gatewayClient: GatewayClient){
+class GameLogic constructor(private val userService: UserService){
 
     @EventListener
     fun event(event: ApplicationReadyEvent) {
@@ -20,7 +20,13 @@ class GameLogic constructor(private val gatewayClient: GatewayClient){
         val scanner = Scanner(System.`in`)
         val answer = scanner.nextLine()
 
-        if (answer.toLowerCase() != "yes") {
+        if (answer.toLowerCase() == "yes" || answer.toLowerCase() == "y") {
+            println("Enter login:")
+            val login = scanner.nextLine()
+            println("Enter password:")
+            val password = scanner.nextLine()
+            userService.auth(login, password)
+        } else {
             println("Enter login:")
             val login = scanner.nextLine()
             println("Enter email:")
@@ -28,13 +34,7 @@ class GameLogic constructor(private val gatewayClient: GatewayClient){
             println("Enter password:")
             val password = scanner.nextLine()
 
-            gatewayClient.registerUser(login, email, password)
-        } else {
-            println("Enter login:")
-            val login = scanner.nextLine()
-            println("Enter password:")
-            val password = scanner.nextLine()
-            gatewayClient.auth(login, password)
+            userService.registerUser(login, email, password)
         }
     }
 }
