@@ -79,6 +79,14 @@ class UserRepository(private val databaseProvider: DatabaseProvider): Repository
                         else map(it[0])
                     }
 
+    suspend fun findByLoginOrEmail(login: String, email: String): UserEntity? =
+            connection.sendQuery("select BIN_TO_UUID(id, true) AS id, email, login, password, BIN_TO_UUID(walletId, true) AS walletId from $TABLE_NAME where login = '$login' or email = '$email'")
+                    .rows
+                    .let {
+                        return if (it.isEmpty()) null
+                        else map(it[0])
+                    }
+
     override suspend fun findAll(): List<UserEntity> {
         return connection
                 .sendQuery("select BIN_TO_UUID(id, true) AS id, email, login, password, BIN_TO_UUID(walletId, true) AS walletId from $TABLE_NAME")

@@ -41,16 +41,30 @@ class UserService(private val userRepository: UserRepository,
                     userRepository.save(UserEntity(id, it.email, it.login, it.password, walletId))
                 }
             }
+
+            runBlocking {
+                val user = userRepository.findByLoginOrEmail(request.login, request.email)
+                if (user != null) {
+                    responseObserver?.onError(Status.INVALID_ARGUMENT
+                            .withDescription("User with such login or email already exists")
+                            .asRuntimeException()
+                    )
+                }
+            }
+
+            val user = UserResponse.newBuilder()
+                    .setId(id.toString())
+                    .setEmail(request.email)
+                    .setLogin(request.login)
+                    .build();
+
+            responseObserver?.onNext(user)
+            responseObserver?.onCompleted()
         }
 
-        val user = UserResponse.newBuilder()
-                .setId(id.toString())
-                .setEmail(request?.email)
-                .setLogin(request?.login)
-                .build();
-
-        responseObserver?.onNext(user)
-        responseObserver?.onCompleted()
+        responseObserver?.onError(Status.INVALID_ARGUMENT
+                .asRuntimeException()
+        )
     }
 
     override fun get(request: UserRequest?, responseObserver: StreamObserver<UserResponse>?) {
@@ -70,7 +84,7 @@ class UserService(private val userRepository: UserRepository,
     override fun auth(request: UserRequest?, responseObserver: StreamObserver<AuthResponse>?) {
         request?.let {
             runBlocking {
-                val entity = withContext(Dispatchers.Default) { userRepository.findByLogin(it.login)}
+                val entity = userRepository.findByLogin(it.login)
                 if (entity?.password == it.password) {
                     responseObserver?.onNext(AuthResponse.newBuilder().setToken("sds").build())
                     responseObserver?.onCompleted()
