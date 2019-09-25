@@ -16,8 +16,21 @@ It means that we don't need to store data in NoSQL. SQL is enough. To much conne
 Front end exchange data with back end via grpc. <br>
 Back end structure: <br>
 
-Logic service - handle all request from front end. And it decides what to do further. <br>
+Logic service - ?? <br>
 Table service - responsible for tables. <br>
 User service - responsible for users (money, auth, ). <br>
 Cash service - responsible for all cash games and their life cycle. <br>
 Dealer service - responsible for distribution of cards. <br>
+Notification service - responsible for delivery events to end user. <br>
+
+What i'm going to use?
+1. kotlin
+2. coroutines
+3. k8s (ingress,...)
+4. docker
+5. grpc
+6. oauth 2.0
+7. rabbit.mq
+8. consul
+9. mysql
+10. redis
