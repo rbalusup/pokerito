@@ -1,5 +1,6 @@
 package io.toxa108.pokerito.userservice
 
+import io.toxa108.pokerito.userservice.config.DatabaseConfig
 import liquibase.integration.spring.SpringLiquibase
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.jdbc.DataSourceBuilder
@@ -12,12 +13,12 @@ class UserServiceApplication {
 
     @Bean()
 //    @Profile("!test")
-    fun getDataSource(): DataSource {
+    fun getDataSource(databaseConfig: DatabaseConfig): DataSource {
         val dataSourceBuilder = DataSourceBuilder.create()
         dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver")
-        dataSourceBuilder.url("jdbc:mysql://localhost:3306/poker")
-        dataSourceBuilder.username("toxa108")
-        dataSourceBuilder.password("Bernard-74-94Q")
+        dataSourceBuilder.url("jdbc:mysql://${databaseConfig.host}:${databaseConfig.port}/${databaseConfig.databaseName}")
+        dataSourceBuilder.username(databaseConfig.userName)
+        dataSourceBuilder.password(databaseConfig.password)
 
         return dataSourceBuilder.build()
     }

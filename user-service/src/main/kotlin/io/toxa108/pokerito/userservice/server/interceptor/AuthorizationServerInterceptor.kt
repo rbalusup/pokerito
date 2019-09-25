@@ -1,4 +1,4 @@
-package io.toxa108.pokerito.userservice.interceptor
+package io.toxa108.pokerito.userservice.server.interceptor
 
 import io.grpc.*
 import io.jsonwebtoken.Jwts
