@@ -1,6 +1,5 @@
 package io.toxa108.pokerito.userservice.service
 
-import io.grpc.Context
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.toxa108.pokerito.userservice.Const
@@ -25,9 +24,9 @@ class AuthService {
 
     fun getToken(id: UUID) = tokens[id]
 
-    fun extractId(token: String) {
-        val token = token.substring(Const.BEARER_TYPE.length).trim();
-        val jwt = parser.parse(token);
-        val ctx = Context.current().withValue(Const.CLIENT_ID_CONTEXT_KEY, jwt.body as String);
+    fun extractId(token: String): String {
+        val v = token.substring(Const.BEARER_TYPE.length).trim();
+        val jwt = parser.parse(v);
+        return jwt.body as String
     }
 }

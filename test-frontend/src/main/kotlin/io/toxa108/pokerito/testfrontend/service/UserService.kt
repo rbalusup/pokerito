@@ -1,10 +1,7 @@
 package io.toxa108.pokerito.testfrontend.service
 
 import io.grpc.ManagedChannelBuilder
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
 import io.toxa108.pokerito.testfrontend.client.BearerToken
-import io.toxa108.pokerito.testfrontend.client.Const
 import io.toxa108.pokerito.userservice.proto.UserRequest
 import io.toxa108.pokerito.userservice.proto.UserServiceGrpc
 import org.springframework.stereotype.Service
@@ -35,14 +32,8 @@ class UserService constructor(private val userDataProvider: UserDataProvider){
                 .usePlaintext()
                 .build()
 
-        val token = Jwts.builder()
-                .setPayload("123")
-                .signWith(SignatureAlgorithm.HS256, Const.JWT_SIGNING_KEY)
-                .compact()
 
-        val be = BearerToken(token)
         val stub = UserServiceGrpc.newBlockingStub(channel)
-                .withCallCredentials(be)
 
         try {
 
@@ -60,7 +51,7 @@ class UserService constructor(private val userDataProvider: UserDataProvider){
             println(response)
             println("Hello to the Poker Game Mr. {${userDataProvider.login}}")
         } catch (e: Throwable) {
-
+            println(e.message)
         }
         channel.shutdown()
     }

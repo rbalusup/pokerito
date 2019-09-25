@@ -8,10 +8,16 @@ class AuthorizationServerInterceptor: ServerInterceptor {
 
     private val parser = Jwts.parser().setSigningKey(Const.JWT_SIGNING_KEY);
 
+    private val accessWithoutToken = listOf("user.UserService/auth", "user.UserService/register")
+
     override fun <ReqT, RespT> interceptCall(
             call: ServerCall<ReqT, RespT>,
             headers: Metadata,
             next: ServerCallHandler<ReqT, RespT>): ServerCall.Listener<ReqT> {
+
+        if (accessWithoutToken.contains(call.methodDescriptor.fullMethodName)) {
+            return Contexts.interceptCall(Context.current(), call, headers, next);
+        }
 
         val value = headers.get(Const.AUTHORIZATION_METADATA_KEY);
 

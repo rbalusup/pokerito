@@ -8,4 +8,6 @@ class UserDataProvider {
     var id: String = ""
     var login: String = ""
     var email: String = ""
+
+    fun isAuth() = token.isNotEmpty()
 }

@@ -96,6 +96,10 @@ class UserService(private val userRepository: UserRepository,
                             .build()
                     )
                     responseObserver?.onCompleted()
+                } else {
+                    responseObserver?.onError(Status.PERMISSION_DENIED
+                            .withDescription("Incorrect login or password!")
+                            .asRuntimeException())
                 }
             }
         } ?: responseObserver?.onError(Status.PERMISSION_DENIED
