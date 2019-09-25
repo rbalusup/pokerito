@@ -1,5 +1,5 @@
 # io.pokerito
-How does the poker game look like?
+How does the poker game looks like?
 
 Thoughts. <br>
 We have cash games and tournaments. <br> 
