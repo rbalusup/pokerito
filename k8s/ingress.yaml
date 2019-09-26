@@ -5,20 +5,29 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
-  name: fortune-ingress
+  name: poker-ingress
   namespace: default
 spec:
   rules:
-    - host: fortune-teller.stack.build
+    - host: poker-table.stack.build
       http:
         paths:
           - backend:
-              serviceName: fortune-teller-service
+              serviceName: poker-table-service
+              servicePort: grpc
+    - host: poker-user.stack.build
+      http:
+        paths:
+          - backend:
+              serviceName: poker-user-service
               servicePort: grpc
   tls:
     # This secret must exist beforehand
-    # The cert must also contain the subj-name fortune-teller.stack.build
+    # The cert must also contain the subj-name poker-table.stack.build
     # https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/PREREQUISITES.md#tls-certificates
-    - secretName: fortune-teller.stack.build
+    - secretName: poker-table.stack.build
       hosts:
-        - fortune-teller.stack.build
+        - poker-table.stack.build
+    - secretName: poker-user.stack.build
+      hosts:
+        - poker-user.stack.build
