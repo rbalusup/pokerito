@@ -10,11 +10,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class TableService constructor(private val tableRepository: TableRepository)
+class TableService constructor(private val tableRepository: TableRepository,
+                               private val publisher: ApplicationEventPublisher)
     : TableServiceGrpc.TableServiceImplBase() {
 
     private final val job = SupervisorJob()
@@ -24,7 +26,7 @@ class TableService constructor(private val tableRepository: TableRepository)
         request?.let {
             // todo get game id from game service
             val gameId = UUID.randomUUID()
-            val id = if (it.tableId != null) UUID.fromString(it.tableId) else UUID.randomUUID()
+            val id = if (it.tableId != null && it.tableId.isNotEmpty()) UUID.fromString(it.tableId) else UUID.randomUUID()
 
             scope.launch {
                 tableRepository.save(TableEntity.Builder()
@@ -32,6 +34,8 @@ class TableService constructor(private val tableRepository: TableRepository)
                         .gameId(gameId)
                         .build()
                 )
+
+                publisher.publishEvent(request)
 
                 // todo send notification to user that user was sit to the table
                 // send event to RabbitMQ. Notification service read this event and send such event.

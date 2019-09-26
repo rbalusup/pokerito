@@ -8,7 +8,7 @@ class AuthorizationServerInterceptor: ServerInterceptor {
 
     private val parser = Jwts.parser().setSigningKey(Const.JWT_SIGNING_KEY);
 
-    private val accessWithoutToken = listOf("user.UserService/auth", "user.UserService/register")
+    private val accessWithoutToken = listOf("user.UserService/auth", "user.UserService/reg")
 
     override fun <ReqT, RespT> interceptCall(
             call: ServerCall<ReqT, RespT>,

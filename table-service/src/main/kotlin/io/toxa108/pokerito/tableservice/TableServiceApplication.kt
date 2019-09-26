@@ -1,11 +1,17 @@
 package io.toxa108.pokerito.tableservice
 
 import liquibase.integration.spring.SpringLiquibase
+import org.springframework.amqp.core.Queue
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import javax.sql.DataSource
+import org.springframework.core.task.SimpleAsyncTaskExecutor
+import org.springframework.context.event.SimpleApplicationEventMulticaster
+import org.springframework.context.event.ApplicationEventMulticaster
+
+
 
 @SpringBootApplication
 class TableServiceApplication{
@@ -26,6 +32,18 @@ class TableServiceApplication{
         liquibase.changeLog = "classpath:db/migrations/v1.0/db.changelog-master.yaml"
         liquibase.dataSource = dataSource
         return liquibase
+    }
+
+    @Bean
+    fun notificationQueue(): Queue {
+        return Queue("notification")
+    }
+
+    @Bean(name = ["applicationEventMulticaster"])
+    fun simpleApplicationEventMulticaster(): ApplicationEventMulticaster {
+        val eventMulticaster = SimpleApplicationEventMulticaster()
+        eventMulticaster.setTaskExecutor(SimpleAsyncTaskExecutor())
+        return eventMulticaster
     }
 }
 

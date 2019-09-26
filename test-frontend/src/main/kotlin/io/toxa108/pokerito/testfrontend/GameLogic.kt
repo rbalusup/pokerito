@@ -1,5 +1,6 @@
 package io.toxa108.pokerito.testfrontend
 
+import io.toxa108.pokerito.testfrontend.service.TableService
 import io.toxa108.pokerito.testfrontend.service.UserDataProvider
 import io.toxa108.pokerito.testfrontend.service.UserService
 import org.springframework.boot.context.event.ApplicationReadyEvent
@@ -10,8 +11,8 @@ import java.util.*
 @Component
 class GameLogic constructor(
         private val userService: UserService,
-        private val userDataProvider: UserDataProvider
-    )
+        private val userDataProvider: UserDataProvider,
+        private val tableService: TableService)
 {
 
     @EventListener
@@ -33,11 +34,13 @@ class GameLogic constructor(
                 reg()
             }
         } else {
-            println("Do you want to sit to the table?")
+            println("Do you want to sit to the table? Yes / No")
             val scanner = Scanner(System.`in`)
             var answer = scanner.nextLine()
+
             if (answer.isAnswerYes()) {
                 println("Sitting up...")
+                tableService.addUserToTable()
             }
         }
     }

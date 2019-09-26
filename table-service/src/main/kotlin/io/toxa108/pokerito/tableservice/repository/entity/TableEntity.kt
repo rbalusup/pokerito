@@ -1,5 +1,6 @@
 package io.toxa108.pokerito.tableservice.repository.entity
 
+import java.lang.IllegalArgumentException
 import java.time.LocalDateTime
 import java.util.*
 
@@ -21,7 +22,10 @@ data class TableEntity(
         fun gameId(gameId: UUID) = apply { this.gameId = gameId }
         fun createTime(createTime: LocalDateTime) = apply { this.createTime = createTime }
         fun closeTime(closeTime: LocalDateTime?) = apply { this.closeTime = closeTime }
-        fun players(players: Short) = apply { this.players = players }
+        fun players(players: Short) = apply {
+            require(players >= 0) { "Players > 0" }
+            this.players = players
+        }
 
         fun build() = TableEntity(
                 id = id,

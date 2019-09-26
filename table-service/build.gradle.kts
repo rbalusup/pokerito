@@ -1,4 +1,3 @@
-import com.google.protobuf.gradle.*
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -40,6 +39,8 @@ dependencies {
     implementation("io.grpc:grpc-protobuf:1.15.1")
     implementation("io.grpc:grpc-all:1.15.0")
     implementation("io.grpc:grpc-services:1.15.1")
+
+    implementation("org.springframework.boot:spring-boot-starter-amqp")
 
     implementation("io.jsonwebtoken:jjwt:0.9.1")
     implementation("javax.xml.bind:jaxb-api:2.2.11")

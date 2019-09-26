@@ -22,7 +22,7 @@ class TableRepository(databaseProvider: DatabaseProvider)
     override suspend fun save(connection: SuspendingConnection, data: TableEntity) {
         connection.sendQuery(
                 "insert into $TABLE_NAME (id, gameId, createTime, closeTime, players) values " +
-                        "(UUID_TO_BIN('${data.id}', true), UUID_TO_BIN('${data.gameId}', true), \"${data.createTime}\", \"${data.closeTime}\", \"${data.players}\")")
+                        "(UUID_TO_BIN('${data.id}', true), UUID_TO_BIN('${data.gameId}', true), \"${data.createTime}\", ${safeSqlNull(data.closeTime)}, \"${data.players}\")")
                 .let {
                     if (it.rowsAffected == 0L) throw DBConnectException("err")
                 }
@@ -40,7 +40,7 @@ class TableRepository(databaseProvider: DatabaseProvider)
 
     override suspend fun findById(id: UUID): TableEntity? =
         connection
-                .sendQuery("select BIN_TO_UUID(id, true) AS id, email, login, password, BIN_TO_UUID(walletId, true) AS walletId from $TABLE_NAME where id = UUID_TO_BIN('${id}', true)")
+                .sendQuery("select BIN_TO_UUID(id, true) AS id, BIN_TO_UUID(gameId, true) as gameId, createTime, closeTime, players from $TABLE_NAME where id = UUID_TO_BIN('${id}', true)")
                 .rows
                 .let {
                     return if (it.isEmpty()) null
@@ -49,7 +49,7 @@ class TableRepository(databaseProvider: DatabaseProvider)
 
     override suspend fun findAll(): List<TableEntity> {
         return connection
-                .sendQuery("select BIN_TO_UUID(id, true) AS id, email, login, password, BIN_TO_UUID(walletId, true) AS walletId from $TABLE_NAME")
+                .sendQuery("select BIN_TO_UUID(id, true) AS id, BIN_TO_UUID(gameId, true) as gameId, createTime, closeTime, players from $TABLE_NAME")
                 .rows.stream().map { r -> map(r) }
                 ?.collect(toList())?.let { it as List<TableEntity> } ?: listOf()
     }

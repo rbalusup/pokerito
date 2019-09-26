@@ -8,7 +8,7 @@ import io.toxa108.pokerito.userservice.config.DatabaseConfig
 import org.springframework.stereotype.Component
 
 @Component
-class DatabaseProvider constructor(private val databaseConfig: DatabaseConfig){
+class DatabaseProvider constructor(databaseConfig: DatabaseConfig){
     private val configuration = Configuration(
             databaseConfig.userName,
             databaseConfig.host,

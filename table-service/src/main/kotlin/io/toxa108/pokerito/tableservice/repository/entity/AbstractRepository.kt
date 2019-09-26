@@ -40,4 +40,9 @@ abstract class AbstractRepository<UUID, T>(databaseProvider: DatabaseProvider,
     }
 
     protected abstract fun map (rowData: RowData): T
+
+    protected fun safeSqlNull(obj: Any?): String {
+        return if (obj == null) "null"
+        else "\"$obj\""
+    }
 }

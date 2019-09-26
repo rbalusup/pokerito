@@ -16,7 +16,7 @@ class UserService constructor(private val userDataProvider: UserDataProvider){
 
         val stub = UserServiceGrpc.newBlockingStub(channel)
 
-        val helloResponse = stub.create(
+        val helloResponse = stub.reg(
                 UserRequest.newBuilder()
                         .setEmail(email)
                         .setLogin(login)
@@ -49,7 +49,7 @@ class UserService constructor(private val userDataProvider: UserDataProvider){
             userDataProvider.id = response.id
 
             println(response)
-            println("Hello to the Poker Game Mr. {${userDataProvider.login}}")
+            println("Hello to the Poker Game Mr. ${userDataProvider.login}")
         } catch (e: Throwable) {
             println(e.message)
         }
