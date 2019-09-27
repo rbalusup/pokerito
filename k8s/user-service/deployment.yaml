@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: poker-user-app
-          image: ???
+          image: woopy/pokerito_user_service:v2
           ports:
             - containerPort: 50051
               name: grpc
