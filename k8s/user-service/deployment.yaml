@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: poker-user-app
   labels:
-    k8s-app:  poker-user-app
+    k8s-app: poker-user-app
   namespace: default
 spec:
   replicas: 1
@@ -14,7 +14,48 @@ spec:
     spec:
       containers:
         - name: poker-user-app
-          image: quay.io/kubernetes-ingress-controller/grpc-fortune-teller:0.1
+          image: ???
           ports:
             - containerPort: 50051
               name: grpc
+          env:
+            - name: "DB_HOST"
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: DB_HOST
+            - name: "DB_PORT"
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: DB_PORT
+            - name: "DB_USER"
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: DB_USER
+            - name: "DB_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: dbpass
+                  key: password
+            - name: "RMQ_HOST"
+              valueFrom:
+                configMapKeyRef:
+                  name: rmq-config
+                  key: RMQ_HOST
+            - name: "RMQ_PORT"
+              valueFrom:
+                configMapKeyRef:
+                  name: rmq-config
+                  key: RMQ_PORT
+            - name: "RMQ_USER"
+              valueFrom:
+                configMapKeyRef:
+                  name: rmq-config
+                  key: RMQ_USER
+            - name: "RMQ_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: rmqpass
+                  key: password

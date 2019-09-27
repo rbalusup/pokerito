@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rmq-config
+  namespace: default
+data:
+  RMQ_HOST: "127.0.0.1"
+  RMQ_PORT: "3306"
+  RMQ_USER: "user"
