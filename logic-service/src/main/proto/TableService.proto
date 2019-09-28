@@ -20,5 +20,6 @@ message TableResponse {
 
 message AddUserToTableRequest {
     string tableId = 1;
+    string userId = 2;
 }
 
