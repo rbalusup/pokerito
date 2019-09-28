@@ -19,7 +19,8 @@ import java.util.*
 class UserService(private val userRepository: UserRepository,
                   private val walletRepository: WalletRepository,
                   private val map: io.toxa108.pokerito.userservice.ext.Map,
-                  private val authService: AuthService
+                  private val authService: AuthService,
+                  private val connectionService: ConnectionService
 ) : UserServiceGrpc.UserServiceImplBase() {
 
     private final val job = SupervisorJob()
@@ -59,6 +60,8 @@ class UserService(private val userRepository: UserRepository,
                     .setLogin(request.login)
                     .build();
 
+            connectionService.addConnection(id)
+
             responseObserver?.onNext(user)
             responseObserver?.onCompleted()
         }
@@ -88,6 +91,9 @@ class UserService(private val userRepository: UserRepository,
                 val entity = userRepository.findByLogin(it.login)
                 if (entity != null && entity.password == it.password) {
                     val token = authService.generateToken(entity.id)
+
+                    connectionService.addConnection(entity.id)
+
                     responseObserver?.onNext(AuthResponse.newBuilder()
                             .setToken(token)
                             .setId(entity.id.toString())

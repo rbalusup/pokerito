@@ -5,7 +5,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.stereotype.Component
 
-
 @RabbitListener(queues = ["connection"])
 @Component
 class ConnectionsReceiver constructor(private val connectionsStorage: ConnectionsStorage) {
