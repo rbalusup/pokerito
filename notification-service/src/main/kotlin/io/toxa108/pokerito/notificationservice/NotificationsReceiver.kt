@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 @Component
 class NotificationsReceiver {
     @RabbitHandler
-    fun receive(message: String) {
+    fun receive(message: ByteArray) {
         println(" [x] Received '$message'")
     }
 }

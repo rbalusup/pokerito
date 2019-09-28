@@ -1,7 +1,6 @@
 package io.toxa108.pokerito.testfrontend.service
 
 import io.grpc.ManagedChannelBuilder
-import io.toxa108.pokerito.testfrontend.client.BearerToken
 import io.toxa108.pokerito.userservice.proto.UserRequest
 import io.toxa108.pokerito.userservice.proto.UserServiceGrpc
 import org.springframework.stereotype.Service
@@ -32,11 +31,9 @@ class UserService constructor(private val userDataProvider: UserDataProvider){
                 .usePlaintext()
                 .build()
 
-
         val stub = UserServiceGrpc.newBlockingStub(channel)
 
         try {
-
             val response = stub.auth(
                     UserRequest.newBuilder()
                             .setLogin(login)
@@ -54,17 +51,6 @@ class UserService constructor(private val userDataProvider: UserDataProvider){
             println(e.message)
         }
         channel.shutdown()
-    }
-
-    fun ttt(login: String, password: String) {
-        val channel = ManagedChannelBuilder.forAddress("localhost", 15004)
-                .usePlaintext()
-                .build()
-
-        val token = BearerToken(userDataProvider.token)
-
-        val stub = UserServiceGrpc.newBlockingStub(channel)
-                .withCallCredentials(token)
     }
 }
 
