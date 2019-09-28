@@ -6,11 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
-import javax.sql.DataSource
-import org.springframework.core.task.SimpleAsyncTaskExecutor
-import org.springframework.context.event.SimpleApplicationEventMulticaster
 import org.springframework.context.event.ApplicationEventMulticaster
-
+import org.springframework.context.event.SimpleApplicationEventMulticaster
+import org.springframework.core.task.SimpleAsyncTaskExecutor
+import javax.sql.DataSource
 
 
 @SpringBootApplication

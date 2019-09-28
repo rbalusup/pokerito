@@ -122,6 +122,12 @@ val protoCopy = tasks.register("protoCopy") {
             into ("/home/toxa/Work/java/github/dealer-service/build/generated/source/proto")
             println("Generated .proto were copied to dealer-service")
         }
+
+        copy {
+            from ("build/generated/source/proto")
+            into ("/home/toxa/Work/java/github/notification-service/build/generated/source/proto")
+            println("Generated .proto were copied to notification-service")
+        }
     }
 }
 

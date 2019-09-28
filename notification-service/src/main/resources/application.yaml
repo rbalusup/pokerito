@@ -1,0 +1,20 @@
+server:
+  port: 8998
+
+database:
+  user-name: ${DB_USER}
+  password: ${DB_PASSWORD}
+  host: ${DB_HOST}
+  port: ${DB_PORT}
+  database-name: poker
+
+spring:
+  rabbitmq:
+    host: ${RMQ_HOST}
+    port: ${RMQ_PORT}
+    username: ${RMQ_USER}
+    password: ${RMQ_PASSWORD}
+
+logging:
+  level:
+    liquibase: INFO
