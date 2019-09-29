@@ -2,6 +2,8 @@ package io.toxa108.pokerito.tableservice.service
 
 import com.google.protobuf.Empty
 import io.grpc.stub.StreamObserver
+import io.toxa108.pokerito.notificationservice.proto.EnterTableFinishRequest
+import io.toxa108.pokerito.tableservice.Const
 import io.toxa108.pokerito.tableservice.proto.AddUserToTableRequest
 import io.toxa108.pokerito.tableservice.proto.TableServiceGrpc
 import io.toxa108.pokerito.tableservice.repository.TableRepository
@@ -35,7 +37,13 @@ class TableService constructor(private val tableRepository: TableRepository,
                         .build()
                 )
 
-                publisher.publishEvent(request)
+                val enterTableRequest = EnterTableFinishRequest.newBuilder()
+                        .setTableId(id.toString())
+                        .setGameId(gameId.toString())
+                        .setUserId(Const.CLIENT_ID_CONTEXT_KEY.get())
+                        .build()
+
+                publisher.publishEvent(enterTableRequest)
 
                 // todo send notification to user that user was sit to the table
                 // send event to RabbitMQ. Notification service read this event and send such event.

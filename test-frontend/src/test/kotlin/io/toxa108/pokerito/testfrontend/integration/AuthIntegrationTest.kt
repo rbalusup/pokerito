@@ -16,7 +16,7 @@ class AuthIntegrationTest {
     @Autowired
     lateinit var userDataProvider: UserDataProvider
 
-    @org.junit.Test
+    //@org.junit.Test
     fun auth_success() {
         userService.auth("toxa", "123")
         assert(userDataProvider.isAuth())

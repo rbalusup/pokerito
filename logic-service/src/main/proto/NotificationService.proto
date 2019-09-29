@@ -18,6 +18,7 @@ message NewConnectionRequest {
 }
 
 message EnterTableFinishRequest {
-    string tableId = 1;
-    string gameId = 2;
+    string userId = 1;
+    string tableId = 2;
+    string gameId = 3;
 }
