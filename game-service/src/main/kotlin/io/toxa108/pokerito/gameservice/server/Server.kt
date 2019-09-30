@@ -11,10 +11,9 @@ class Server constructor(private val discoveryConfig: DiscoveryConfig){
                 .forPort(discoveryConfig.gameService.port)
                 .addService(ProtoReflectionService.newInstance())
                 .build()
-                .start()
 
     init {
-
+        server.start()
         server.awaitTermination()
     }
 }
