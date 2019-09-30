@@ -6,9 +6,13 @@ import io.toxa108.pokerito.tableservice.Const
 
 class AuthorizationServerInterceptor: ServerInterceptor {
 
-    private val parser = Jwts.parser().setSigningKey(Const.JWT_SIGNING_KEY);
+    private val parser = Jwts.parser().setSigningKey(Const.JWT_SIGNING_KEY)
 
     private val accessWithoutToken = emptyList<String>()
+
+    companion object {
+        val USER_IDENTITY: Context.Key<String> = Context.key("userId")
+    }
 
     override fun <ReqT, RespT> interceptCall(
             call: ServerCall<ReqT, RespT>,
@@ -16,28 +20,29 @@ class AuthorizationServerInterceptor: ServerInterceptor {
             next: ServerCallHandler<ReqT, RespT>): ServerCall.Listener<ReqT> {
 
         if (accessWithoutToken.contains(call.methodDescriptor.fullMethodName)) {
-            return Contexts.interceptCall(Context.current(), call, headers, next);
+            return Contexts.interceptCall(Context.current(), call, headers, next)
         }
 
-        val value = headers.get(Const.AUTHORIZATION_METADATA_KEY);
+        val value = headers.get(Const.AUTHORIZATION_METADATA_KEY)
 
-        val status: Status;
+        val status: Status
         status = if (value == null) {
-            Status.UNAUTHENTICATED.withDescription("Authorization token is missing");
+            Status.UNAUTHENTICATED.withDescription("Authorization token is missing")
         } else if (!value.startsWith(Const.BEARER_TYPE)) {
-            Status.UNAUTHENTICATED.withDescription("Unknown authorization type");
+            Status.UNAUTHENTICATED.withDescription("Unknown authorization type")
         } else {
             try {
-                val token = value.substring(Const.BEARER_TYPE.length).trim();
-                val jwt = parser.parse(token);
-                val ctx = Context.current().withValue(Const.CLIENT_ID_CONTEXT_KEY, jwt.body as String);
-                return Contexts.interceptCall(ctx, call, headers, next);
+                val token = value.substring(Const.BEARER_TYPE.length).trim()
+                val jwt = parser.parse(token)
+                var ctx = Context.current()
+                ctx = ctx.withValue(USER_IDENTITY, jwt.body.toString())
+                return Contexts.interceptCall(ctx, call, headers, next)
             } catch (e: Exception) {
-                Status.UNAUTHENTICATED.withDescription(e.message).withCause(e);
+                Status.UNAUTHENTICATED.withDescription(e.message).withCause(e)
             }
         }
 
-        call.close(status, headers);
+        call.close(status, headers)
         return object : ServerCall.Listener<ReqT>() {
         }
     }

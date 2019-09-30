@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service
 @Service
 class NotificationService: NotificationServiceGrpc.NotificationServiceImplBase() {
     override fun enterTable(request: EnterTableFinishRequest?, responseObserver: StreamObserver<Empty>?) {
+        println("You was set up to the table. The game is starting.")
         responseObserver?.onNext(Empty.newBuilder().build())
         responseObserver?.onCompleted()
     }

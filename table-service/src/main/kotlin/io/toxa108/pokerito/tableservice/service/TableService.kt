@@ -3,7 +3,7 @@ package io.toxa108.pokerito.tableservice.service
 import com.google.protobuf.Empty
 import io.grpc.stub.StreamObserver
 import io.toxa108.pokerito.notificationservice.proto.EnterTableFinishRequest
-import io.toxa108.pokerito.tableservice.Const
+import io.toxa108.pokerito.tableservice.interceptor.AuthorizationServerInterceptor
 import io.toxa108.pokerito.tableservice.proto.AddUserToTableRequest
 import io.toxa108.pokerito.tableservice.proto.TableServiceGrpc
 import io.toxa108.pokerito.tableservice.repository.TableRepository
@@ -30,6 +30,7 @@ class TableService constructor(private val tableRepository: TableRepository,
             val gameId = UUID.randomUUID()
             val id = if (it.tableId != null && it.tableId.isNotEmpty()) UUID.fromString(it.tableId) else UUID.randomUUID()
 
+            val userId = AuthorizationServerInterceptor.USER_IDENTITY.get()
             scope.launch {
                 tableRepository.save(TableEntity.Builder()
                         .id(id)
@@ -40,7 +41,7 @@ class TableService constructor(private val tableRepository: TableRepository,
                 val enterTableRequest = EnterTableFinishRequest.newBuilder()
                         .setTableId(id.toString())
                         .setGameId(gameId.toString())
-                        .setUserId(Const.CLIENT_ID_CONTEXT_KEY.get())
+                        .setUserId(userId)
                         .build()
 
                 publisher.publishEvent(enterTableRequest)
