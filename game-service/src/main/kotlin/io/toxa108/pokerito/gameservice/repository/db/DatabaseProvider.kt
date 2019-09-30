@@ -8,21 +8,22 @@ import io.toxa108.pokerito.gameservice.config.DatabaseConfig
 import org.springframework.stereotype.Component
 
 @Component
-class DatabaseProvider constructor(databaseConfig: DatabaseConfig){
+class DatabaseProvider constructor(databaseConfig: DatabaseConfig) {
     private val configuration = Configuration(
-            databaseConfig.userName,
-            databaseConfig.host,
-            Integer.valueOf(databaseConfig.port),
-            databaseConfig.password,
-            databaseConfig.databaseName)
+            databaseConfig.userName(),
+            databaseConfig.host(),
+            databaseConfig.port(),
+            databaseConfig.password(),
+            databaseConfig.databaseName())
+
     val connectionPool = ConnectionPool(
             factory = MySQLConnectionFactory(configuration),
             configuration = ConnectionPoolConfigurationBuilder(
-                    username = databaseConfig.userName,
-                    host = databaseConfig.host,
-                    port = Integer.valueOf(databaseConfig.port),
-                    password = databaseConfig.password,
-                    database = databaseConfig.databaseName
+                    username = databaseConfig.userName(),
+                    host = databaseConfig.host(),
+                    port = Integer.valueOf(databaseConfig.port()),
+                    password = databaseConfig.password(),
+                    database = databaseConfig.databaseName()
             ).build()
     )
 }

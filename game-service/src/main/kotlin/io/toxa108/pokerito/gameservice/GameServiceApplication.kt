@@ -11,25 +11,12 @@ import javax.sql.DataSource
 @SpringBootApplication
 class GameServiceApplication {
     @Bean()
-//    @Profile("!test")
-    fun getDataSource(databaseConfig: DatabaseConfig): DataSource {
+    fun dataSource(databaseConfig: DatabaseConfig): DataSource {
         val dataSourceBuilder = DataSourceBuilder.create()
         dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver")
-        dataSourceBuilder.url("jdbc:mysql://${databaseConfig.host}:${databaseConfig.port}/${databaseConfig.databaseName}")
-        dataSourceBuilder.username(databaseConfig.userName)
-        dataSourceBuilder.password(databaseConfig.password)
-
-        return dataSourceBuilder.build()
-    }
-
-    //    @Bean
-//    @Profile("test")
-    fun getDataSourceTest(): DataSource {
-        val dataSourceBuilder = DataSourceBuilder.create()
-        dataSourceBuilder.driverClassName("org.h2.Driver")
-        dataSourceBuilder.url("jdbc:h2:mem:test")
-        dataSourceBuilder.username("SA")
-        dataSourceBuilder.password("")
+        dataSourceBuilder.url("jdbc:mysql://${databaseConfig.host()}:${databaseConfig.port()}/${databaseConfig.databaseName()}")
+        dataSourceBuilder.username(databaseConfig.userName())
+        dataSourceBuilder.password(databaseConfig.password())
         return dataSourceBuilder.build()
     }
 

@@ -2,10 +2,12 @@ package io.toxa108.pokerito.gameservice.repository
 
 import com.github.jasync.sql.db.RowData
 import com.github.jasync.sql.db.SuspendingConnection
+import com.github.jasync.sql.db.asSuspending
+import io.toxa108.pokerito.gameservice.repository.db.DatabaseProvider
 
 abstract class AbstractRepository<UUID, T>(databaseProvider: DatabaseProvider,
-                                           private val tableName: String
-) : Repository<UUID, T> {
+                                           private val tableName: String)
+    : Repository<UUID, T> {
 
     protected val connection = databaseProvider.connectionPool.asSuspending
 
