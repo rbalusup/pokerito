@@ -20,5 +20,6 @@ class Server(private val tableService: TableService) {
 
     init {
         server.start()
+        server.awaitTermination()
     }
 }

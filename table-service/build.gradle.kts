@@ -25,9 +25,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.3.1")
+
     implementation("com.github.jasync-sql:jasync-mysql:1.0.7")
     implementation("org.liquibase:liquibase-core:3.4.1")
     runtimeOnly("mysql:mysql-connector-java")

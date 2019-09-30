@@ -17,5 +17,6 @@ class Server(private val userService: UserService) {
 
     init {
         server.start()
+        server.awaitTermination()
     }
 }

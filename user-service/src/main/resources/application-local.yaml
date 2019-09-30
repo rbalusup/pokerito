@@ -1,6 +1,3 @@
-server:
-  port: 9008
-
 database:
   user-name: toxa
   password: bernard94
