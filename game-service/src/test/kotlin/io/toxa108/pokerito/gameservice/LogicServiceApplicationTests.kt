@@ -1,4 +1,4 @@
-package io.toxa108.pokerito.logicservice
+package io.toxa108.pokerito.gameservice
 
 import org.junit.Test
 import org.junit.runner.RunWith

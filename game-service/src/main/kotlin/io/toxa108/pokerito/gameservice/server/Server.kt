@@ -1,4 +1,4 @@
-package io.toxa108.pokerito.logicservice.server
+package io.toxa108.pokerito.gameservice.server
 
 import io.grpc.ServerBuilder
 import io.grpc.protobuf.services.ProtoReflectionService

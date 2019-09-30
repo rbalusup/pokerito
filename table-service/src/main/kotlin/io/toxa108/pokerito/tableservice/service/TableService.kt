@@ -26,28 +26,33 @@ class TableService constructor(private val tableRepository: TableRepository,
 
     override fun addUserToTable(request: AddUserToTableRequest?, responseObserver: StreamObserver<Empty>?) {
         request?.let {
-            // todo get game id from game service
-            val gameId = UUID.randomUUID()
-            val id = if (it.tableId != null && it.tableId.isNotEmpty()) UUID.fromString(it.tableId) else UUID.randomUUID()
+            if (it.tableId.isNullOrEmpty()) {
+                // todo get game id from game service
 
-            val userId = AuthorizationServerInterceptor.USER_IDENTITY.get()
-            scope.launch {
-                tableRepository.save(TableEntity.Builder()
-                        .id(id)
-                        .gameId(gameId)
-                        .build()
-                )
+                val gameId = UUID.randomUUID()
+                val id = if (it.tableId != null && it.tableId.isNotEmpty()) UUID.fromString(it.tableId) else UUID.randomUUID()
 
-                val enterTableRequest = EnterTableFinishRequest.newBuilder()
-                        .setTableId(id.toString())
-                        .setGameId(gameId.toString())
-                        .setUserId(userId)
-                        .build()
+                val userId = AuthorizationServerInterceptor.USER_IDENTITY.get()
+                scope.launch {
+                    tableRepository.save(TableEntity.Builder()
+                            .id(id)
+                            .gameId(gameId)
+                            .build()
+                    )
 
-                publisher.publishEvent(enterTableRequest)
+                    val enterTableRequest = EnterTableFinishRequest.newBuilder()
+                            .setTableId(id.toString())
+                            .setGameId(gameId.toString())
+                            .setUserId(userId)
+                            .build()
 
-                // todo send notification to user that user was sit to the table
-                // send event to RabbitMQ. Notification service read this event and send such event.
+                    publisher.publishEvent(enterTableRequest)
+
+                    // todo send notification to user that user was sit to the table
+                    // send event to RabbitMQ. Notification service read this event and send such event.
+                }
+            } else {
+
             }
         }
 

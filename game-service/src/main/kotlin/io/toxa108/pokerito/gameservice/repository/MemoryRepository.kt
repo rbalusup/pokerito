@@ -1,4 +1,4 @@
-package io.toxa108.pokerito.logicservice.repository
+package io.toxa108.pokerito.gameservice.repository
 
 interface MemoryRepository<ID, T> {
     suspend fun save(data: T)

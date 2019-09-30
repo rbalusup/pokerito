@@ -1,6 +1,6 @@
-package io.toxa108.pokerito.logicservice.repository
+package io.toxa108.pokerito.gameservice.repository
 
-import io.toxa108.pokerito.logicservice.repository.entity.TableEntity
+import io.toxa108.pokerito.gameservice.repository.entity.TableEntity
 import org.springframework.stereotype.Repository
 import java.util.*
 import java.util.stream.Collectors.toList
