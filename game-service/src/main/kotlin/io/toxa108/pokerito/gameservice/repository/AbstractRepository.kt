@@ -1,10 +1,7 @@
-package io.toxa108.pokerito.tableservice.repository.entity
+package io.toxa108.pokerito.gameservice.repository
 
 import com.github.jasync.sql.db.RowData
 import com.github.jasync.sql.db.SuspendingConnection
-import com.github.jasync.sql.db.asSuspending
-import io.toxa108.pokerito.tableservice.repository.Repository
-import io.toxa108.pokerito.tableservice.repository.db.DatabaseProvider
 
 abstract class AbstractRepository<UUID, T>(databaseProvider: DatabaseProvider,
                                            private val tableName: String

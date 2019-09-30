@@ -2,18 +2,18 @@ package io.toxa108.pokerito.gameservice.server
 
 import io.grpc.netty.NettyServerBuilder
 import io.grpc.protobuf.services.ProtoReflectionService
+import io.toxa108.pokerito.gameservice.config.DiscoveryConfig
 import org.springframework.stereotype.Service
 
 @Service
-class Server {
-    private val server: io.grpc.Server
+class Server constructor(private val discoveryConfig: DiscoveryConfig){
+    private val server: io.grpc.Server = NettyServerBuilder
+                .forPort(discoveryConfig.gameService.port)
+                .addService(ProtoReflectionService.newInstance())
+                .build()
+                .start()
 
     init {
-        server = NettyServerBuilder
-                    .forPort(15002)
-                    .addService(ProtoReflectionService.newInstance())
-                    .build()
-                    .start()
 
         server.awaitTermination()
     }

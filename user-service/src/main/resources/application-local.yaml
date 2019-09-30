@@ -5,6 +5,20 @@ database:
   port: 3306
   database-name: poker
 
+discovery:
+  user-service:
+    ip: 127.0.0.1
+    port: 1504
+  game-service:
+    ip: 127.0.0.1
+    port: 1502
+  table-service:
+    ip: 127.0.0.1
+    port: 1505
+  dealer-service:
+    ip: 127.0.0.1
+    port: 1510
+
 spring:
   rabbitmq:
     host: localhost

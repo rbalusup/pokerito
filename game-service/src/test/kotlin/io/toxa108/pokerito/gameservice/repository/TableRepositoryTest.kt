@@ -1,6 +1,5 @@
 package io.toxa108.pokerito.gameservice.repository
 
-import io.toxa108.pokerito.gameservice.repository.entity.TableEntity
 import org.junit.Before
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName

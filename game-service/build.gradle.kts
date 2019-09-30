@@ -33,13 +33,34 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.3.1")
+    implementation("com.github.jasync-sql:jasync-mysql:1.0.7")
+    implementation("org.liquibase:liquibase-core:3.4.1")
+    runtimeOnly("mysql:mysql-connector-java")
+
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("com.h2database:h2")
+
+    implementation("org.springframework.boot:spring-boot-starter-amqp")
 
     implementation("com.google.protobuf:protobuf-java:3.6.1")
     implementation("io.grpc:grpc-stub:1.15.1")
     implementation("io.grpc:grpc-protobuf:1.15.1")
     implementation("io.grpc:grpc-all:1.15.0")
     implementation("io.grpc:grpc-services:1.15.1")
-    implementation("io.grpc:grpc-netty:1.15.1")
+
+    implementation("io.jsonwebtoken:jjwt:0.9.1")
+    implementation("javax.xml.bind:jaxb-api:2.2.11")
+    implementation("com.sun.xml.bind:jaxb-core:2.2.11")
+    implementation("com.sun.xml.bind:jaxb-impl:2.2.11")
+    implementation("javax.activation:activation:1.1.1")
+
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.3.1")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
+    testImplementation("io.projectreactor:reactor-test")
 
     if (JavaVersion.current().isJava9Compatible) {
         // Workaround for @javax.annotation.Generated
@@ -50,9 +71,6 @@ dependencies {
     // Extra proto source files besides the ones residing under
     // "src/main".
     protobuf(files("lib/protos.tar.gz"))
-
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
     testProtobuf(files("lib/protos-test.tar.gz"))
 }
 

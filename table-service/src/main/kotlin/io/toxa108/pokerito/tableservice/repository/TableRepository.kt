@@ -4,7 +4,6 @@ import com.github.jasync.sql.db.RowData
 import com.github.jasync.sql.db.SuspendingConnection
 import io.toxa108.pokerito.tableservice.repository.db.DBConnectException
 import io.toxa108.pokerito.tableservice.repository.db.DatabaseProvider
-import io.toxa108.pokerito.tableservice.repository.entity.AbstractRepository
 import io.toxa108.pokerito.tableservice.repository.entity.TableEntity
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime

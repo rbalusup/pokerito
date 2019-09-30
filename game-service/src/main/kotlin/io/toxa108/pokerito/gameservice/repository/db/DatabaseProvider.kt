@@ -1,14 +1,14 @@
-package io.toxa108.pokerito.tableservice.repository.db
+package io.toxa108.pokerito.gameservice.repository.db
 
 import com.github.jasync.sql.db.Configuration
 import com.github.jasync.sql.db.ConnectionPoolConfigurationBuilder
 import com.github.jasync.sql.db.mysql.pool.MySQLConnectionFactory
 import com.github.jasync.sql.db.pool.ConnectionPool
-import io.toxa108.pokerito.tableservice.config.DatabaseConfig
+import io.toxa108.pokerito.gameservice.config.DatabaseConfig
 import org.springframework.stereotype.Component
 
 @Component
-class DatabaseProvider constructor(databaseConfig: DatabaseConfig) {
+class DatabaseProvider constructor(databaseConfig: DatabaseConfig){
     private val configuration = Configuration(
             databaseConfig.userName,
             databaseConfig.host,
