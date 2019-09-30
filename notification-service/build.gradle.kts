@@ -31,6 +31,8 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-amqp")
 
+    compile("io.github.microutils:kotlin-logging:1.7.6")
+
     implementation("com.google.protobuf:protobuf-java:3.6.1")
     implementation("io.grpc:grpc-stub:1.15.1")
     implementation("io.grpc:grpc-protobuf:1.15.1")
